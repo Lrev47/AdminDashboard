@@ -62,11 +62,15 @@ const Sidebar = () => {
   return (
     <Box
       sx={{
-        height: "100vh", // Extend sidebar to full height of viewport
+        height: "100vh", // Full viewport height
+        display: "flex",
+        flexDirection: "column", // Make the sidebar content stack vertically
         "& .pro-sidebar-inner": {
           background: `${colors.primary[400]} !important`,
-          height: "100%", // Ensure the inner sidebar also takes full height
-          overflowY: "auto", // Enable scrolling
+          display: "flex",
+          flexDirection: "column",
+          height: "100%", // Ensure the inner sidebar takes full height
+          overflowY: "auto", // Enable scrolling if the content exceeds the height
         },
         "& .pro-icon-wrapper": {
           backgroundColor: "transparent !important",
@@ -80,7 +84,6 @@ const Sidebar = () => {
         "& .pro-menu-item.active": {
           color: "#6870fa !important",
         },
-        // Custom scrollbar styles
         "& ::-webkit-scrollbar": {
           width: "6px",
         },
@@ -91,9 +94,8 @@ const Sidebar = () => {
         "& ::-webkit-scrollbar-track": {
           backgroundColor: `${colors.primary[400]}`,
         },
-        // Firefox scrollbar customization
         scrollbarWidth: "thin",
-        backgroundColor: `${colors.primary[400]}`,
+        scrollbarColor: `6870fa ${colors.primary[400]}`,
       }}
     >
       <ProSidebar collapsed={isCollapsed}>
