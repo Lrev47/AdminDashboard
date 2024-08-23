@@ -1,4 +1,3 @@
-// scenes/AiAgentsScene.jsx
 import React from "react";
 import {
   Box,
@@ -10,18 +9,11 @@ import {
 } from "@mui/material";
 import { tokens } from "../../theme";
 import { Link } from "react-router-dom";
+import aiAgentTeams from "../../data/AiAgentMockData"; // Import the mock data
 
 const AiAgentsScene = () => {
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
-
-  // Define the agents with titles and routes
-  const agents = [
-    { title: "Finance Agent", route: "/finance-agent" },
-    { title: "Content Writer Agent", route: "/content-writer-agent" },
-    { title: "Data Analysis Agent", route: "/data-analysis-agent" },
-    { title: "Task Automation Agent", route: "/task-automation-agent" },
-  ];
 
   return (
     <Box m="20px">
@@ -33,18 +25,28 @@ const AiAgentsScene = () => {
       >
         AI Agents
       </Typography>
-      <Box display="grid" gridTemplateColumns="repeat(12, 1fr)" gap="20px">
-        {agents.map((agent, index) => (
+      <Box display="grid" gridTemplateColumns="repeat(12, 1fr)" gap="40px">
+        {aiAgentTeams.map((agent, index) => (
           <Box gridColumn="span 6" key={index}>
-            <Card sx={{ backgroundColor: colors.primary[400] }}>
+            <Card
+              sx={{ backgroundColor: colors.primary[400], height: "150px" }}
+            >
               <CardActionArea component={Link} to={agent.route}>
-                <CardContent>
+                <CardContent
+                  sx={{
+                    display: "flex",
+                    justifyContent: "center",
+                    alignItems: "center",
+                    height: "100%",
+                  }}
+                >
                   <Typography
                     variant="h5"
                     fontWeight="600"
                     color={colors.grey[100]}
+                    align="center"
                   >
-                    {agent.title}
+                    {agent.teamName}
                   </Typography>
                 </CardContent>
               </CardActionArea>
