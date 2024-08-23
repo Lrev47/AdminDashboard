@@ -19,6 +19,10 @@ import MapOutlinedIcon from "@mui/icons-material/MapOutlined";
 import SmartToyOutlinedIcon from "@mui/icons-material/SmartToyOutlined";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import PsychologyOutlinedIcon from "@mui/icons-material/PsychologyOutlined";
+import CodeOutlinedIcon from "@mui/icons-material/CodeOutlined";
+import CalculateOutlinedIcon from "@mui/icons-material/CalculateOutlined";
+import NoteOutlinedIcon from "@mui/icons-material/NoteOutlined";
+import TerminalOutlinedIcon from "@mui/icons-material/TerminalOutlined";
 
 const Item = ({ title, to, icon, selected, setSelected }) => {
   const theme = useTheme();
@@ -48,16 +52,21 @@ const Sidebar = () => {
   const [isPagesOpen, setIsPagesOpen] = useState(true);
   const [isChartsOpen, setIsChartsOpen] = useState(true);
   const [isDataOpen, setIsDataOpen] = useState(true);
+  const [isToolsOpen, setIsToolsOpen] = useState(true);
 
   const handlePagesToggle = () => setIsPagesOpen(!isPagesOpen);
   const handleChartsToggle = () => setIsChartsOpen(!isChartsOpen);
   const handleDataToggle = () => setIsDataOpen(!isDataOpen);
+  const handleToolsToggle = () => setIsToolsOpen(!isToolsOpen);
 
   return (
     <Box
       sx={{
+        height: "100vh", // Extend sidebar to full height of viewport
         "& .pro-sidebar-inner": {
           background: `${colors.primary[400]} !important`,
+          height: "100%", // Ensure the inner sidebar also takes full height
+          overflowY: "auto", // Enable scrolling
         },
         "& .pro-icon-wrapper": {
           backgroundColor: "transparent !important",
@@ -71,6 +80,20 @@ const Sidebar = () => {
         "& .pro-menu-item.active": {
           color: "#6870fa !important",
         },
+        // Custom scrollbar styles
+        "& ::-webkit-scrollbar": {
+          width: "6px",
+        },
+        "& ::-webkit-scrollbar-thumb": {
+          backgroundColor: "#4a4fda",
+          borderRadius: "6px",
+        },
+        "& ::-webkit-scrollbar-track": {
+          backgroundColor: `${colors.primary[400]}`,
+        },
+        // Firefox scrollbar customization
+        scrollbarWidth: "thin",
+        backgroundColor: `${colors.primary[400]}`,
       }}
     >
       <ProSidebar collapsed={isCollapsed}>
@@ -174,6 +197,14 @@ const Sidebar = () => {
                 setSelected={setSelected}
               />
               <Item
+                title="Code Block"
+                to="/code-block"
+                icon={<CodeOutlinedIcon />}
+                selected={selected}
+                setSelected={setSelected}
+              />
+
+              <Item
                 title="Profile Form"
                 to="/form"
                 icon={<PersonOutlinedIcon />}
@@ -243,6 +274,52 @@ const Sidebar = () => {
                 title="Geography Chart"
                 to="/geography"
                 icon={<MapOutlinedIcon />}
+                selected={selected}
+                setSelected={setSelected}
+              />
+            </Collapse>
+
+            <Typography
+              variant="h6"
+              color={colors.grey[300]}
+              sx={{
+                m: "15px 0 5px 20px",
+                display: "flex",
+                alignItems: "center",
+                cursor: "pointer",
+              }}
+              onClick={handleToolsToggle} // New toggle for Tools
+            >
+              Tools
+              <ExpandMoreIcon
+                sx={{
+                  transform: isToolsOpen ? "rotate(0deg)" : "rotate(180deg)",
+                  transition: "transform 0.3s",
+                  marginLeft: "auto",
+                }}
+              />
+            </Typography>
+            <Collapse in={isToolsOpen}>
+              {" "}
+              {/* New collapsible section for Tools */}
+              <Item
+                title="Calculator"
+                to="/calculator"
+                icon={<CalculateOutlinedIcon />}
+                selected={selected}
+                setSelected={setSelected}
+              />
+              <Item
+                title="Notepad"
+                to="/notepad"
+                icon={<NoteOutlinedIcon />}
+                selected={selected}
+                setSelected={setSelected}
+              />
+              <Item
+                title="Terminal"
+                to="/terminal"
+                icon={<TerminalOutlinedIcon />}
                 selected={selected}
                 setSelected={setSelected}
               />
