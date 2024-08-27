@@ -432,164 +432,164 @@ export const mockPieData = [
 
 export const mockLineData = [
   {
-    id: "japan",
+    id: "Bills",
     color: tokens("dark").greenAccent[500],
     data: [
       {
-        x: "plane",
+        x: "January",
         y: 101,
       },
       {
-        x: "helicopter",
+        x: "February",
         y: 75,
       },
       {
-        x: "boat",
+        x: "March",
         y: 36,
       },
       {
-        x: "train",
+        x: "April",
         y: 216,
       },
       {
-        x: "subway",
+        x: "May",
         y: 35,
       },
       {
-        x: "bus",
+        x: "June",
         y: 236,
       },
       {
-        x: "car",
+        x: "July",
         y: 88,
       },
       {
-        x: "moto",
+        x: "August",
         y: 232,
       },
       {
-        x: "bicycle",
+        x: "Septempber",
         y: 281,
       },
       {
-        x: "horse",
+        x: "October",
         y: 1,
       },
       {
-        x: "skateboard",
+        x: "November",
         y: 35,
       },
       {
-        x: "others",
+        x: "December",
         y: 14,
       },
     ],
   },
   {
-    id: "france",
+    id: "Income",
     color: tokens("dark").blueAccent[300],
     data: [
       {
-        x: "plane",
-        y: 212,
+        x: "January",
+        y: 101,
       },
       {
-        x: "helicopter",
-        y: 190,
-      },
-      {
-        x: "boat",
-        y: 270,
-      },
-      {
-        x: "train",
-        y: 9,
-      },
-      {
-        x: "subway",
+        x: "February",
         y: 75,
       },
       {
-        x: "bus",
-        y: 175,
+        x: "March",
+        y: 36,
       },
       {
-        x: "car",
-        y: 33,
+        x: "April",
+        y: 216,
       },
       {
-        x: "moto",
-        y: 189,
+        x: "May",
+        y: 35,
       },
       {
-        x: "bicycle",
-        y: 97,
+        x: "June",
+        y: 236,
       },
       {
-        x: "horse",
-        y: 87,
+        x: "July",
+        y: 88,
       },
       {
-        x: "skateboard",
-        y: 299,
+        x: "August",
+        y: 232,
       },
       {
-        x: "others",
-        y: 251,
+        x: "Septempber",
+        y: 281,
+      },
+      {
+        x: "October",
+        y: 1,
+      },
+      {
+        x: "November",
+        y: 35,
+      },
+      {
+        x: "December",
+        y: 14,
       },
     ],
   },
   {
-    id: "us",
+    id: "Expenses",
     color: tokens("dark").redAccent[200],
     data: [
       {
-        x: "plane",
-        y: 191,
+        x: "January",
+        y: 101,
       },
       {
-        x: "helicopter",
-        y: 136,
+        x: "February",
+        y: 75,
       },
       {
-        x: "boat",
-        y: 91,
+        x: "March",
+        y: 36,
       },
       {
-        x: "train",
-        y: 190,
+        x: "April",
+        y: 216,
       },
       {
-        x: "subway",
-        y: 211,
+        x: "May",
+        y: 35,
       },
       {
-        x: "bus",
-        y: 152,
+        x: "June",
+        y: 236,
       },
       {
-        x: "car",
-        y: 189,
+        x: "July",
+        y: 88,
       },
       {
-        x: "moto",
-        y: 152,
+        x: "August",
+        y: 232,
       },
       {
-        x: "bicycle",
-        y: 8,
+        x: "Septempber",
+        y: 281,
       },
       {
-        x: "horse",
-        y: 197,
+        x: "October",
+        y: 1,
       },
       {
-        x: "skateboard",
-        y: 107,
+        x: "November",
+        y: 35,
       },
       {
-        x: "others",
-        y: 170,
+        x: "December",
+        y: 14,
       },
     ],
   },
