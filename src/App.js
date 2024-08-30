@@ -1,5 +1,5 @@
-import { useState } from "react";
-import { Routes, Route } from "react-router-dom";
+import { useState, useEffect } from "react";
+import { Routes, Route, useNavigate } from "react-router-dom";
 import Topbar from "./scenes/global/Topbar";
 import Sidebar from "./scenes/global/Sidebar";
 import Dashboard from "./scenes/dashboard";
@@ -15,14 +15,24 @@ import Pie from "./scenes/pie";
 import FAQ from "./scenes/faq";
 import Geography from "./scenes/geography";
 import Calendar from "./scenes/calendar/calendar";
-import LandingPage from "./scenes/landingPage/landingPage";
+import LogInSignUp from "./scenes/LogInSignUp/LogInSignUp";
 import { CssBaseline, ThemeProvider, Box } from "@mui/material";
 import { ColorModeContext, useMode } from "./theme";
 
 function App() {
   const [theme, colorMode] = useMode();
   const [isSidebar, setIsSidebar] = useState(true);
-  const [isAuthenticated, setIsAuthenticated] = useState(false); // New authentication state
+  const [isAuthenticated, setIsAuthenticated] = useState(false);
+  const navigate = useNavigate();
+
+  // Check for token in localStorage when the component mounts
+  useEffect(() => {
+    const token = localStorage.getItem("authToken");
+    if (token) {
+      setIsAuthenticated(true);
+      navigate("/dashboard"); // Redirect to the dashboard if already authenticated
+    }
+  }, [navigate]);
 
   return (
     <ColorModeContext.Provider value={colorMode}>
@@ -36,10 +46,11 @@ function App() {
             {isAuthenticated && <Topbar setIsSidebar={setIsSidebar} />}
             <Box flexGrow={1} overflow="auto">
               <Routes>
-                {/* Landing page is shown by default */}
-                <Route path="/" element={<LandingPage />} />
+                {/* LogInSignUp page is shown by default */}
+                <Route path="/" element={<LogInSignUp />} />
+
                 {/* Protected routes */}
-                {isAuthenticated && (
+                {isAuthenticated ? (
                   <>
                     <Route path="/dashboard" element={<Dashboard />} />
                     <Route path="/team" element={<Team />} />
@@ -58,6 +69,8 @@ function App() {
                     <Route path="/calendar" element={<Calendar />} />
                     <Route path="/geography" element={<Geography />} />
                   </>
+                ) : (
+                  <Route path="*" element={<LogInSignUp />} />
                 )}
               </Routes>
             </Box>
