@@ -1,5 +1,5 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
-import financialApi from "../api/financialApi";
+import financialApi from "../api/financeApi";
 
 const initialState = {
   accounts: [],

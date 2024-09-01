@@ -1,5 +1,5 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
-import imageApi from "../api/imageApi";
+import imageApi from "../api/imagesApi";
 
 const initialState = {
   images: [],

@@ -1,9 +1,10 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { ProSidebar, Menu, MenuItem } from "react-pro-sidebar";
 import { Box, IconButton, Typography, useTheme, Collapse } from "@mui/material";
 import { Link } from "react-router-dom";
 import "react-pro-sidebar/dist/css/styles.css";
 import { tokens } from "../../theme";
+import { useSelector } from "react-redux"; // Importing useSelector to access Redux store
 import HomeOutlinedIcon from "@mui/icons-material/HomeOutlined";
 import PeopleOutlinedIcon from "@mui/icons-material/PeopleOutlined";
 import ContactsOutlinedIcon from "@mui/icons-material/ContactsOutlined";
@@ -58,6 +59,15 @@ const Sidebar = () => {
   const handleChartsToggle = () => setIsChartsOpen(!isChartsOpen);
   const handleDataToggle = () => setIsDataOpen(!isDataOpen);
   const handleToolsToggle = () => setIsToolsOpen(!isToolsOpen);
+
+  // Getting user data from Redux store
+  const user = useSelector((state) => state.auth.user);
+
+  useEffect(() => {
+    if (user) {
+      console.log("User Data:", user);
+    }
+  }, [user]);
 
   return (
     <Box
@@ -133,7 +143,7 @@ const Sidebar = () => {
                   alt="profile-user"
                   width="100px"
                   height="100px"
-                  src={`../../assets/user.png`}
+                  src={user?.profilePicture || `../../assets/user.png`}
                   style={{ cursor: "pointer", borderRadius: "50%" }}
                 />
               </Box>
@@ -144,10 +154,10 @@ const Sidebar = () => {
                   fontWeight="bold"
                   sx={{ m: "10px 0 0 0" }}
                 >
-                  Luis Revilla
+                  {user ? user.name : "Loading..."}
                 </Typography>
                 <Typography variant="h5" color={colors.greenAccent[500]}>
-                  Software Engineer
+                  {user ? user.jobTitle : "Loading..."}
                 </Typography>
               </Box>
             </Box>

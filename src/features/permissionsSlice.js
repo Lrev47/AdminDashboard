@@ -1,5 +1,5 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
-import permissionsApi from "../api/permissionsApi";
+import permissionsApi from "../api/permissions";
 
 const initialState = {
   roles: [],

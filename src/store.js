@@ -2,17 +2,17 @@
 import { configureStore } from "@reduxjs/toolkit";
 import authReducer from "./features/authSlice";
 import userReducer from "./features/userSlice";
-import databaseReducer from "./features/databaseSlice";
+import databaseReducer from "./features/databaseQueriesSlice";
 import environmentReducer from "./features/environmentSlice";
 import externalServiceReducer from "./features/externalServiceSlice";
 import financeReducer from "./features/financeSlice";
-import imageReducer from "./features/imageSlice";
+import imageReducer from "./features/imagesSlice";
 import mockDataReducer from "./features/mockDataSlice";
-import notificationReducer from "./features/notificationSlice";
-import permissionReducer from "./features/permissionSlice";
+import notificationReducer from "./features/notificationsSlice";
+import permissionReducer from "./features/permissionsSlice";
 import projectReducer from "./features/projectSlice";
 import settingsReducer from "./features/settingsSlice";
-import testingAndDebuggingReducer from "./features/testingAndDebuggingSlice";
+import testingAndDebuggingReducer from "./features/testingDebuggingSlice";
 import versionControlReducer from "./features/versionControlSlice";
 
 export const store = configureStore({

@@ -1,5 +1,5 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
-import databaseApi from "../api/databaseApi";
+import databaseApi from "../api/databaseQueriesApi";
 
 const initialState = {
   tables: [],

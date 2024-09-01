@@ -1,5 +1,5 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
-import testingAndDebuggingApi from "../api/testingAndDebuggingApi";
+import testingAndDebuggingApi from "../api/testingDebuggingApi";
 
 const initialState = {
   testResults: [],

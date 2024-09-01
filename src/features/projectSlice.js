@@ -1,5 +1,5 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
-import projectApi from "../api/projectApi";
+import projectApi from "../api/project";
 
 const initialState = {
   projects: [],
