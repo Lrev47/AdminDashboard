@@ -1,4 +1,5 @@
-import { useState, useEffect } from "react";
+import { useState } from "react";
+import { useEffect } from "react";
 import { Routes, Route, useNavigate } from "react-router-dom";
 import Topbar from "./scenes/global/Topbar";
 import Sidebar from "./scenes/global/Sidebar";
@@ -13,8 +14,10 @@ import Line from "./scenes/line";
 import AiAgentsScene from "./scenes/AiAgents/AiAgentsScene";
 import Pie from "./scenes/pie";
 import FAQ from "./scenes/faq";
+import JobFormTable from "./scenes/JobTracking/jobFormTable";
 import Geography from "./scenes/geography";
 import Calendar from "./scenes/calendar/calendar";
+import JobTracker from "./scenes/JobTracking/jobTracker";
 import LogInSignUp from "./scenes/LogInSignUp/LogInSignUp";
 import { CssBaseline, ThemeProvider, Box } from "@mui/material";
 import { ColorModeContext, useMode } from "./theme";
@@ -25,12 +28,10 @@ function App() {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const navigate = useNavigate();
 
-  // Check for token in localStorage when the component mounts
   useEffect(() => {
     const token = localStorage.getItem("authToken");
     if (token) {
       setIsAuthenticated(true);
-      navigate("/dashboard"); // Redirect to the dashboard if already authenticated
     }
   }, [navigate]);
 
@@ -64,6 +65,11 @@ function App() {
                     <Route path="/form" element={<Form />} />
                     <Route path="/bar" element={<Bar />} />
                     <Route path="/pie" element={<Pie />} />
+                    <Route path="/job-tracker" element={<JobTracker />} />
+                    <Route
+                      path="/job-tracker/bulk-add"
+                      element={<JobFormTable />}
+                    />
                     <Route path="/line" element={<Line />} />
                     <Route path="/faq" element={<FAQ />} />
                     <Route path="/calendar" element={<Calendar />} />

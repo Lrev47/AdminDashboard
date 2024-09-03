@@ -1,7 +1,7 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { Box, Button, Typography, TextField } from "@mui/material";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import {
   loginStart,
   loginSuccess,
@@ -14,12 +14,9 @@ const LogInSignUp = () => {
   // Local state for username and password inputs
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
-
-  // useDispatch hook to dispatch actions to the Redux store
   const dispatch = useDispatch();
-
-  // useNavigate hook to navigate between routes
   const navigate = useNavigate();
+  const auth = useSelector((state) => state.auth);
 
   // Function to handle login when the user clicks the "Sign In" button
   const handleLogin = async () => {
@@ -31,16 +28,22 @@ const LogInSignUp = () => {
     if (result.success) {
       // If login is successful, dispatch the loginSuccess action with user data and token
       dispatch(
-        loginSuccess({ user: result.data.user, token: result.data.token })
+        await loginSuccess({ user: result.data.user, token: result.data.token })
       );
       localStorage.setItem("authToken", result.data.token); // Storing the token in localStorage
-      dispatch(fetchUserProfile());
+      await dispatch(fetchUserProfile()).unwrap();
       navigate("/dashboard"); // Navigating to the dashboard route
     } else {
       // If login fails, dispatch the loginFailure action with the error message
       dispatch(loginFailure({ error: result.error }));
     }
   };
+
+  useEffect(() => {
+    if (auth.isAuthenticated) {
+      navigate("/dashboard");
+    }
+  }, [auth.isAuthenticated, navigate]);
 
   return (
     <Box

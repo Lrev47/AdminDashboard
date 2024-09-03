@@ -24,6 +24,8 @@ import CodeOutlinedIcon from "@mui/icons-material/CodeOutlined";
 import CalculateOutlinedIcon from "@mui/icons-material/CalculateOutlined";
 import NoteOutlinedIcon from "@mui/icons-material/NoteOutlined";
 import TerminalOutlinedIcon from "@mui/icons-material/TerminalOutlined";
+// import WorkOutlineOutlinedIcon from "@mui/icons-material/WorkOutlineOutlined";
+import BusinessCenterOutlinedIcon from "@mui/icons-material/BusinessCenterOutlined";
 
 const Item = ({ title, to, icon, selected, setSelected }) => {
   const theme = useTheme();
@@ -143,10 +145,15 @@ const Sidebar = () => {
                   alt="profile-user"
                   width="100px"
                   height="100px"
-                  src={user?.profilePicture || `../../assets/user.png`}
+                  src={
+                    user
+                      ? user.data.avatar || `../../assets/user.png`
+                      : `../../assets/user.png`
+                  }
                   style={{ cursor: "pointer", borderRadius: "50%" }}
                 />
               </Box>
+
               <Box textAlign="center">
                 <Typography
                   variant="h2"
@@ -154,10 +161,10 @@ const Sidebar = () => {
                   fontWeight="bold"
                   sx={{ m: "10px 0 0 0" }}
                 >
-                  {user ? user.name : "Loading..."}
+                  {user ? user.data.firstName : "Loading..."}
                 </Typography>
                 <Typography variant="h5" color={colors.greenAccent[500]}>
-                  {user ? user.jobTitle : "Loading..."}
+                  {user ? user.data.occupation : "Loading..."}
                 </Typography>
               </Box>
             </Box>
@@ -318,6 +325,13 @@ const Sidebar = () => {
                 title="Calculator"
                 to="/calculator"
                 icon={<CalculateOutlinedIcon />}
+                selected={selected}
+                setSelected={setSelected}
+              />
+              <Item
+                title="Job Tracker"
+                to="/job-tracker"
+                icon={<BusinessCenterOutlinedIcon />}
                 selected={selected}
                 setSelected={setSelected}
               />
