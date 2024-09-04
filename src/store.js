@@ -17,8 +17,10 @@ import projectReducer from "./features/projectSlice";
 import settingsReducer from "./features/settingsSlice";
 import testingAndDebuggingReducer from "./features/testingDebuggingSlice";
 import versionControlReducer from "./features/versionControlSlice";
+import jobTrackerReducer from "./features/jobTrackingSlice";
 
 // Combine all reducers into one
+
 const rootReducer = combineReducers({
   auth: authReducer,
   user: userReducer,
@@ -34,6 +36,7 @@ const rootReducer = combineReducers({
   settings: settingsReducer,
   testingAndDebugging: testingAndDebuggingReducer,
   versionControl: versionControlReducer,
+  jobTracker: jobTrackerReducer,
 });
 
 // Configure persistence

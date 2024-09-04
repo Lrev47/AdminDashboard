@@ -1,3 +1,4 @@
+import React, { useState } from "react";
 import {
   Box,
   Button,
@@ -6,16 +7,18 @@ import {
   useTheme,
   IconButton,
 } from "@mui/material";
-import { useState } from "react";
+import { useNavigate } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
+import { bulkAddJobApplications } from "../../features/jobTrackingSlice"; // Correct import path
 import { tokens } from "../../theme";
 import Header from "../../components/Header";
-import DeleteIcon from "@mui/icons-material/Delete";
-import { useNavigate } from "react-router-dom";
+import DeleteIcon from "@mui/icons-material/Delete"; // Ensure this is only imported once
 
-const JobFormTable = ({ onSubmit }) => {
+const JobFormTable = ({ token }) => {
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
   const navigate = useNavigate();
+  const dispatch = useDispatch();
   const [rows, setRows] = useState([
     {
       id: Date.now(),
@@ -27,6 +30,7 @@ const JobFormTable = ({ onSubmit }) => {
       status: "",
     },
   ]);
+  const loading = useSelector((state) => state.jobTracker.loading);
 
   const handleAddRow = () => {
     setRows([
@@ -55,7 +59,7 @@ const JobFormTable = ({ onSubmit }) => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    onSubmit(rows);
+    dispatch(bulkAddJobApplications({ jobs: rows, token }));
     setRows([
       {
         id: Date.now(),
@@ -72,6 +76,8 @@ const JobFormTable = ({ onSubmit }) => {
   const handleBack = () => {
     navigate("/job-tracker");
   };
+
+  if (loading) return <p>Loading...</p>;
 
   return (
     <Box m="20px">
