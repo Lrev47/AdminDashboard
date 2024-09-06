@@ -1,4 +1,3 @@
-// src/api/jobTrackerApi.js
 const API_URL = "http://localhost:5000/jobTracker"; // Ensure this matches your backend base route
 
 // Helper function to set headers with Authorization token
@@ -10,8 +9,13 @@ const setHeaders = (token) => {
 };
 
 // Get all job applications
-export const getAllJobApplications = async (token) => {
+export const getAllJobApplications = async () => {
   try {
+    const token = localStorage.getItem("authToken");
+    if (!token) {
+      throw new Error("No authentication token found");
+    }
+
     const response = await fetch(`${API_URL}`, {
       method: "GET",
       headers: setHeaders(token),
@@ -27,8 +31,13 @@ export const getAllJobApplications = async (token) => {
 };
 
 // Get job application by ID
-export const getJobApplicationById = async (id, token) => {
+export const getJobApplicationById = async (id) => {
   try {
+    const token = localStorage.getItem("authToken");
+    if (!token) {
+      throw new Error("No authentication token found");
+    }
+
     const response = await fetch(`${API_URL}/${id}`, {
       method: "GET",
       headers: setHeaders(token),
@@ -44,8 +53,13 @@ export const getJobApplicationById = async (id, token) => {
 };
 
 // Create a new job application
-export const createJobApplication = async (jobData, token) => {
+export const createJobApplication = async (jobData) => {
   try {
+    const token = localStorage.getItem("authToken");
+    if (!token) {
+      throw new Error("No authentication token found");
+    }
+
     const response = await fetch(`${API_URL}`, {
       method: "POST",
       headers: setHeaders(token),
@@ -62,8 +76,13 @@ export const createJobApplication = async (jobData, token) => {
 };
 
 // Bulk create job applications
-export const createBulkJobApplications = async (jobs, token) => {
+export const createBulkJobApplications = async (jobs) => {
   try {
+    const token = localStorage.getItem("authToken");
+    if (!token) {
+      throw new Error("No authentication token found");
+    }
+
     const response = await fetch(`${API_URL}/bulk`, {
       method: "POST",
       headers: setHeaders(token),
@@ -80,8 +99,13 @@ export const createBulkJobApplications = async (jobs, token) => {
 };
 
 // Update a job application
-export const updateJobApplication = async (id, jobData, token) => {
+export const updateJobApplication = async (id, jobData) => {
   try {
+    const token = localStorage.getItem("authToken");
+    if (!token) {
+      throw new Error("No authentication token found");
+    }
+
     const response = await fetch(`${API_URL}/${id}`, {
       method: "PUT",
       headers: setHeaders(token),
@@ -98,8 +122,13 @@ export const updateJobApplication = async (id, jobData, token) => {
 };
 
 // Delete a job application
-export const deleteJobApplication = async (id, token) => {
+export const deleteJobApplication = async (id) => {
   try {
+    const token = localStorage.getItem("authToken");
+    if (!token) {
+      throw new Error("No authentication token found");
+    }
+
     const response = await fetch(`${API_URL}/${id}`, {
       method: "DELETE",
       headers: setHeaders(token),

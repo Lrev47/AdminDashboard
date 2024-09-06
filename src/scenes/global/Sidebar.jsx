@@ -24,7 +24,6 @@ import CodeOutlinedIcon from "@mui/icons-material/CodeOutlined";
 import CalculateOutlinedIcon from "@mui/icons-material/CalculateOutlined";
 import NoteOutlinedIcon from "@mui/icons-material/NoteOutlined";
 import TerminalOutlinedIcon from "@mui/icons-material/TerminalOutlined";
-// import WorkOutlineOutlinedIcon from "@mui/icons-material/WorkOutlineOutlined";
 import BusinessCenterOutlinedIcon from "@mui/icons-material/BusinessCenterOutlined";
 
 const Item = ({ title, to, icon, selected, setSelected }) => {
@@ -145,11 +144,7 @@ const Sidebar = () => {
                   alt="profile-user"
                   width="100px"
                   height="100px"
-                  src={
-                    user
-                      ? user.data.avatar || `../../assets/user.png`
-                      : `../../assets/user.png`
-                  }
+                  src={user?.avatar || "../../assets/user.png"}
                   style={{ cursor: "pointer", borderRadius: "50%" }}
                 />
               </Box>
@@ -161,10 +156,10 @@ const Sidebar = () => {
                   fontWeight="bold"
                   sx={{ m: "10px 0 0 0" }}
                 >
-                  {user ? user.data.firstName : "Loading..."}
+                  {user ? user.firstName : "Loading..."}
                 </Typography>
                 <Typography variant="h5" color={colors.greenAccent[500]}>
-                  {user ? user.data.occupation : "Loading..."}
+                  {user ? user.occupation : "Loading..."}
                 </Typography>
               </Box>
             </Box>

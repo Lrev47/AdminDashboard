@@ -10,6 +10,13 @@ const handleResponse = async (response) => {
   }
 };
 
+const setHeaders = (token) => {
+  return {
+    "Content-Type": "application/json",
+    Authorization: `Bearer ${token}`, // Attach JWT token
+  };
+};
+
 // Register a new user
 export const register = async (userData) => {
   try {
@@ -38,7 +45,12 @@ export const login = async (username, password) => {
       body: JSON.stringify({ username, password }),
     });
 
-    return await handleResponse(response);
+    const result = await handleResponse(response);
+    if (result.success) {
+      // Store the token in localStorage
+      localStorage.setItem("authToken", result.data.token);
+    }
+    return result;
   } catch (error) {
     return { success: false, error: error.message };
   }
@@ -129,19 +141,25 @@ export const verifyEmail = async (token) => {
 // Get user profile
 export const getProfile = async () => {
   try {
+    const token = localStorage.getItem("authToken"); // Get the token from localStorage
+    if (!token) {
+      throw new Error("No token found");
+    }
+
     const response = await fetch(`${BASE_URL}/me`, {
       method: "GET",
-      headers: {
-        Authorization: `Bearer ${localStorage.getItem("authToken")}`,
-      },
+      headers: setHeaders(token), // Use the same setHeaders helper function
     });
 
-    return await handleResponse(response);
+    if (!response.ok) {
+      throw new Error("Failed to fetch profile");
+    }
+    return await response.json();
   } catch (error) {
-    return { success: false, error: error.message };
+    console.error("Error fetching user profile:", error);
+    throw error;
   }
 };
-
 // Change password
 export const changePassword = async (oldPassword, newPassword) => {
   try {
