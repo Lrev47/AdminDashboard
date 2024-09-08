@@ -55,9 +55,10 @@ export const deleteJob = createAsyncThunk(
 
 export const updateJob = createAsyncThunk(
   "jobTracker/updateJob",
-  async ({ id, jobData, token }, thunkAPI) => {
+  async ({ id, data, token }, thunkAPI) => {
     try {
-      return await updateJobApplication(id, jobData, token);
+      // Call the API to update the job in the database
+      return await updateJobApplication(id, data, token);
     } catch (error) {
       return thunkAPI.rejectWithValue(error.message);
     }
@@ -127,10 +128,14 @@ const jobTrackerSlice = createSlice({
 
     // Update job application
     builder.addCase(updateJob.fulfilled, (state, action) => {
-      const index = state.jobs.findIndex((job) => job.id === action.payload.id);
+      const updatedJob = action.payload;
+      const index = state.jobs.findIndex((job) => job.id === updatedJob.id);
       if (index !== -1) {
-        state.jobs[index] = action.payload;
+        state.jobs[index] = updatedJob;
       }
+    });
+    builder.addCase(updateJob.rejected, (state, action) => {
+      state.error = action.payload; // Capture any update errors
     });
   },
 });

@@ -4,7 +4,7 @@ const API_URL = "http://localhost:5000/jobTracker"; // Ensure this matches your 
 const setHeaders = (token) => {
   return {
     "Content-Type": "application/json",
-    Authorization: `Bearer ${token}`, // Attach JWT token
+    Authorization: `Bearer ${token}`, // Ensure JWT token is passed correctly
   };
 };
 
@@ -99,7 +99,7 @@ export const createBulkJobApplications = async (jobs) => {
 };
 
 // Update a job application
-export const updateJobApplication = async (id, jobData) => {
+export const updateJobApplication = async (id, data) => {
   try {
     const token = localStorage.getItem("authToken");
     if (!token) {
@@ -109,11 +109,13 @@ export const updateJobApplication = async (id, jobData) => {
     const response = await fetch(`${API_URL}/${id}`, {
       method: "PUT",
       headers: setHeaders(token),
-      body: JSON.stringify(jobData),
+      body: JSON.stringify(data),
     });
+
     if (!response.ok) {
       throw new Error(`Failed to update job application with ID: ${id}`);
     }
+
     return await response.json();
   } catch (error) {
     console.error("Error updating job application:", error);
