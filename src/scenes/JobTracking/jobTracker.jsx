@@ -1,14 +1,13 @@
 import React, { useEffect, useState } from "react";
 import { Box, Button, TextField, Select, MenuItem, Grid } from "@mui/material";
-import { useNavigate } from "react-router-dom";
+// import { useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import JobTable from "./jobTable";
 import {
   fetchJobApplications,
   createNewJobApplication,
-} from "../../features/jobTrackingSlice"; // Updated import path
+} from "../../features/jobTrackingSlice";
 
-// Enum options for dropdowns
 const applicationStatusOptions = [
   "APPLIED",
   "PHONE_SCREEN",
@@ -31,7 +30,7 @@ const industryOptions = [
 const priorityLevelOptions = ["HIGH", "MEDIUM", "LOW"];
 
 const JobTracker = ({ token }) => {
-  const navigate = useNavigate();
+  // const navigate = useNavigate();
   const dispatch = useDispatch();
   const jobs = useSelector((state) => state.jobTracker.jobs);
   const loading = useSelector((state) => state.jobTracker.loading);
@@ -60,6 +59,9 @@ const JobTracker = ({ token }) => {
   };
 
   const handleAddJob = () => {
+    // Log the newJob to check its contents
+    console.log("New Job Data:", newJob);
+
     // Validate required fields before dispatching
     if (!newJob.companyName || !newJob.positionTitle) {
       alert(
@@ -68,14 +70,17 @@ const JobTracker = ({ token }) => {
       return;
     }
 
-    // Dispatch the action to create a new job application
-    dispatch(createNewJobApplication({ data: newJob, token }))
-      .unwrap() // Use unwrap() to handle success/error in createAsyncThunk
+    // Convert salaryOffered to a number if it's not empty
+    if (newJob.salaryOffered) {
+      newJob.salaryOffered = parseFloat(newJob.salaryOffered);
+    }
+
+    dispatch(createNewJobApplication({ jobData: newJob, token }))
+      .unwrap()
       .then(() => {
-        // Show success message (optional)
         alert("Job added successfully!");
 
-        // Reset form to its initial state after successful submission
+        // Reset form after successful submission
         setNewJob({
           companyName: "",
           positionTitle: "",
@@ -88,7 +93,6 @@ const JobTracker = ({ token }) => {
         });
       })
       .catch((error) => {
-        // Display error to the user
         console.error("Failed to add job:", error);
         alert(`Failed to add job: ${error.message}`);
       });
@@ -96,7 +100,6 @@ const JobTracker = ({ token }) => {
 
   return (
     <Box>
-      {/* Compact form to add a single job */}
       <Box
         component="form"
         sx={{
@@ -107,7 +110,6 @@ const JobTracker = ({ token }) => {
         }}
       >
         <Grid container spacing={2}>
-          {/* First row */}
           <Grid item xs={6}>
             <TextField
               label="Company Name"
@@ -129,7 +131,6 @@ const JobTracker = ({ token }) => {
             />
           </Grid>
 
-          {/* Second row */}
           <Grid item xs={4}>
             <Select
               label="Application Status"
@@ -176,7 +177,6 @@ const JobTracker = ({ token }) => {
             </Select>
           </Grid>
 
-          {/* Third row */}
           <Grid item xs={4}>
             <Select
               label="Priority Level"
@@ -218,17 +218,15 @@ const JobTracker = ({ token }) => {
         </Button>
       </Box>
 
-      {/* Button to navigate to the bulk add page */}
-      <Button
+      {/* <Button
         variant="contained"
         color="primary"
         onClick={() => navigate("/job-tracker/bulk-add")}
         sx={{ marginBottom: "20px" }}
       >
         Add Jobs in Bulk
-      </Button>
+      </Button> */}
 
-      {/* Job Table */}
       <JobTable jobs={jobs} token={token} />
     </Box>
   );

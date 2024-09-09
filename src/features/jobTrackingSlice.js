@@ -1,7 +1,7 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import {
   getAllJobApplications,
-  createBulkJobApplications,
+  // createBulkJobApplications,
   createJobApplication,
   deleteJobApplication,
   updateJobApplication,
@@ -30,16 +30,16 @@ export const createNewJobApplication = createAsyncThunk(
   }
 );
 
-export const bulkAddJobApplications = createAsyncThunk(
-  "jobTracker/bulkAddJobApplications",
-  async ({ jobs, token }, thunkAPI) => {
-    try {
-      return await createBulkJobApplications(jobs, token);
-    } catch (error) {
-      return thunkAPI.rejectWithValue(error.message);
-    }
-  }
-);
+// export const bulkAddJobApplications = createAsyncThunk(
+//   "jobTracker/bulkAddJobApplications",
+//   async ({ jobs, token }, thunkAPI) => {
+//     try {
+//       return await createBulkJobApplications(jobs, token); // bulk add jobs function
+//     } catch (error) {
+//       return thunkAPI.rejectWithValue(error.message);
+//     }
+//   }
+// );
 
 export const deleteJob = createAsyncThunk(
   "jobTracker/deleteJob",
@@ -107,23 +107,26 @@ const jobTrackerSlice = createSlice({
       state.error = action.payload;
     });
 
-    // Bulk add job applications
-    builder.addCase(bulkAddJobApplications.pending, (state) => {
-      state.loading = true;
-      state.error = null;
-    });
-    builder.addCase(bulkAddJobApplications.fulfilled, (state, action) => {
-      state.jobs.push(...action.payload);
-      state.loading = false;
-    });
-    builder.addCase(bulkAddJobApplications.rejected, (state, action) => {
-      state.loading = false;
-      state.error = action.payload;
-    });
+    // // Bulk add job applications
+    // builder.addCase(bulkAddJobApplications.pending, (state) => {
+    //   state.loading = true;
+    //   state.error = null;
+    // });
+    // builder.addCase(bulkAddJobApplications.fulfilled, (state, action) => {
+    //   state.jobs.push(...action.payload);
+    //   state.loading = false;
+    // });
+    // builder.addCase(bulkAddJobApplications.rejected, (state, action) => {
+    //   state.loading = false;
+    //   state.error = action.payload;
+    // });
 
     // Delete job application
     builder.addCase(deleteJob.fulfilled, (state, action) => {
       state.jobs = state.jobs.filter((job) => job.id !== action.payload);
+    });
+    builder.addCase(deleteJob.rejected, (state, action) => {
+      state.error = action.payload;
     });
 
     // Update job application
