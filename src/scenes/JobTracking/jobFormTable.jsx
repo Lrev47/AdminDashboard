@@ -6,6 +6,8 @@ import {
   Typography,
   useTheme,
   IconButton,
+  Select,
+  MenuItem,
 } from "@mui/material";
 import { useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
@@ -13,6 +15,28 @@ import { bulkAddJobApplications } from "../../features/jobTrackingSlice"; // Cor
 import { tokens } from "../../theme";
 import Header from "../../components/Header";
 import DeleteIcon from "@mui/icons-material/Delete"; // Ensure this is only imported once
+
+// Enum options for dropdowns
+const applicationStatusOptions = [
+  "APPLIED",
+  "PHONE_SCREEN",
+  "INTERVIEW_SCHEDULED",
+  "INTERVIEW_COMPLETED",
+  "OFFER_RECEIVED",
+  "REJECTED",
+  "ACCEPTED",
+];
+
+const jobCategoryOptions = ["FULL_TIME", "PART_TIME", "CONTRACT", "INTERNSHIP"];
+const industryOptions = [
+  "TECH",
+  "FINANCE",
+  "HEALTHCARE",
+  "MARKETING",
+  "EDUCATION",
+  "OTHER",
+];
+const priorityLevelOptions = ["HIGH", "MEDIUM", "LOW"];
 
 const JobFormTable = ({ token }) => {
   const theme = useTheme();
@@ -27,7 +51,12 @@ const JobFormTable = ({ token }) => {
       location: "",
       jobPostingUrl: "",
       applicationDate: "",
-      status: "",
+      status: "APPLIED", // Default status
+      jobCategory: "FULL_TIME",
+      industry: "TECH",
+      priorityLevel: "MEDIUM",
+      salaryOffered: "",
+      recruiterPhone: "",
     },
   ]);
   const loading = useSelector((state) => state.jobTracker.loading);
@@ -42,7 +71,12 @@ const JobFormTable = ({ token }) => {
         location: "",
         jobPostingUrl: "",
         applicationDate: "",
-        status: "",
+        status: "APPLIED", // Default status
+        jobCategory: "FULL_TIME",
+        industry: "TECH",
+        priorityLevel: "MEDIUM",
+        salaryOffered: "",
+        recruiterPhone: "",
       },
     ]);
   };
@@ -68,7 +102,12 @@ const JobFormTable = ({ token }) => {
         location: "",
         jobPostingUrl: "",
         applicationDate: "",
-        status: "",
+        status: "APPLIED", // Default status
+        jobCategory: "FULL_TIME",
+        industry: "TECH",
+        priorityLevel: "MEDIUM",
+        salaryOffered: "",
+        recruiterPhone: "",
       },
     ]);
   };
@@ -87,124 +126,183 @@ const JobFormTable = ({ token }) => {
       />
       <form onSubmit={handleSubmit}>
         <Box>
-          <Box display="grid" gridTemplateColumns="repeat(12, 1fr)" gap="20px">
-            <Typography
-              variant="h6"
-              color={colors.grey[100]}
-              gridColumn="span 2"
-            >
-              Company Name
-            </Typography>
-            <Typography
-              variant="h6"
-              color={colors.grey[100]}
-              gridColumn="span 2"
-            >
-              Position Title
-            </Typography>
-            <Typography
-              variant="h6"
-              color={colors.grey[100]}
-              gridColumn="span 2"
-            >
-              Location
-            </Typography>
-            <Typography
-              variant="h6"
-              color={colors.grey[100]}
-              gridColumn="span 3"
-            >
-              Job Posting URL
-            </Typography>
-            <Typography
-              variant="h6"
-              color={colors.grey[100]}
-              gridColumn="span 2"
-            >
-              Application Date
-            </Typography>
-            <Typography
-              variant="h6"
-              color={colors.grey[100]}
-              gridColumn="span 1"
-            >
-              Status
-            </Typography>
-          </Box>
+          <Typography variant="h6" color={colors.grey[100]} mb="20px">
+            Fill in the details for each job below:
+          </Typography>
           {rows.map((row) => (
             <Box
               key={row.id}
-              display="grid"
-              gridTemplateColumns="repeat(12, 1fr)"
-              gap="20px"
-              mt="10px"
+              mb="20px"
+              borderBottom={`1px solid ${colors.grey[700]}`}
+              pb="10px"
             >
-              <TextField
-                fullWidth
-                variant="filled"
-                name="companyName"
-                value={row.companyName}
-                onChange={(e) =>
-                  handleChange(row.id, "companyName", e.target.value)
-                }
-                sx={{ gridColumn: "span 2" }}
-              />
-              <TextField
-                fullWidth
-                variant="filled"
-                name="positionTitle"
-                value={row.positionTitle}
-                onChange={(e) =>
-                  handleChange(row.id, "positionTitle", e.target.value)
-                }
-                sx={{ gridColumn: "span 2" }}
-              />
-              <TextField
-                fullWidth
-                variant="filled"
-                name="location"
-                value={row.location}
-                onChange={(e) =>
-                  handleChange(row.id, "location", e.target.value)
-                }
-                sx={{ gridColumn: "span 2" }}
-              />
-              <TextField
-                fullWidth
-                variant="filled"
-                name="jobPostingUrl"
-                value={row.jobPostingUrl}
-                onChange={(e) =>
-                  handleChange(row.id, "jobPostingUrl", e.target.value)
-                }
-                sx={{ gridColumn: "span 3" }}
-              />
-              <TextField
-                fullWidth
-                variant="filled"
-                type="date"
-                name="applicationDate"
-                value={row.applicationDate}
-                InputLabelProps={{ shrink: true }}
-                onChange={(e) =>
-                  handleChange(row.id, "applicationDate", e.target.value)
-                }
-                sx={{ gridColumn: "span 2" }}
-              />
-              <TextField
-                fullWidth
-                variant="filled"
-                name="status"
-                value={row.status}
-                onChange={(e) => handleChange(row.id, "status", e.target.value)}
-                sx={{ gridColumn: "span 1" }}
-              />
-              <IconButton
-                onClick={() => handleRemoveRow(row.id)}
-                sx={{ gridColumn: "span 1", color: colors.redAccent[400] }}
+              <Box
+                display="grid"
+                gridTemplateColumns="repeat(12, 1fr)"
+                gap="20px"
               >
-                <DeleteIcon />
-              </IconButton>
+                {/* Job Information */}
+                <TextField
+                  fullWidth
+                  variant="filled"
+                  label="Company Name"
+                  value={row.companyName}
+                  onChange={(e) =>
+                    handleChange(row.id, "companyName", e.target.value)
+                  }
+                  sx={{ gridColumn: "span 3" }}
+                />
+                <TextField
+                  fullWidth
+                  variant="filled"
+                  label="Position Title"
+                  value={row.positionTitle}
+                  onChange={(e) =>
+                    handleChange(row.id, "positionTitle", e.target.value)
+                  }
+                  sx={{ gridColumn: "span 3" }}
+                />
+                <TextField
+                  fullWidth
+                  variant="filled"
+                  label="Location"
+                  value={row.location}
+                  onChange={(e) =>
+                    handleChange(row.id, "location", e.target.value)
+                  }
+                  sx={{ gridColumn: "span 3" }}
+                />
+                <TextField
+                  fullWidth
+                  variant="filled"
+                  label="Job Posting URL"
+                  value={row.jobPostingUrl}
+                  onChange={(e) =>
+                    handleChange(row.id, "jobPostingUrl", e.target.value)
+                  }
+                  sx={{ gridColumn: "span 3" }}
+                />
+                <TextField
+                  fullWidth
+                  variant="filled"
+                  type="date"
+                  label="Application Date"
+                  value={row.applicationDate}
+                  InputLabelProps={{ shrink: true }}
+                  onChange={(e) =>
+                    handleChange(row.id, "applicationDate", e.target.value)
+                  }
+                  sx={{ gridColumn: "span 3" }}
+                />
+
+                {/* Dropdowns for Status, Category, Industry */}
+                <Select
+                  fullWidth
+                  variant="filled"
+                  value={row.status}
+                  onChange={(e) =>
+                    handleChange(row.id, "status", e.target.value)
+                  }
+                  displayEmpty
+                  sx={{ gridColumn: "span 2" }}
+                >
+                  <MenuItem value="" disabled>
+                    Status
+                  </MenuItem>
+                  {applicationStatusOptions.map((status) => (
+                    <MenuItem key={status} value={status}>
+                      {status}
+                    </MenuItem>
+                  ))}
+                </Select>
+                <Select
+                  fullWidth
+                  variant="filled"
+                  value={row.jobCategory}
+                  onChange={(e) =>
+                    handleChange(row.id, "jobCategory", e.target.value)
+                  }
+                  displayEmpty
+                  sx={{ gridColumn: "span 2" }}
+                >
+                  <MenuItem value="" disabled>
+                    Job Category
+                  </MenuItem>
+                  {jobCategoryOptions.map((category) => (
+                    <MenuItem key={category} value={category}>
+                      {category}
+                    </MenuItem>
+                  ))}
+                </Select>
+                <Select
+                  fullWidth
+                  variant="filled"
+                  value={row.industry}
+                  onChange={(e) =>
+                    handleChange(row.id, "industry", e.target.value)
+                  }
+                  displayEmpty
+                  sx={{ gridColumn: "span 2" }}
+                >
+                  <MenuItem value="" disabled>
+                    Industry
+                  </MenuItem>
+                  {industryOptions.map((industry) => (
+                    <MenuItem key={industry} value={industry}>
+                      {industry}
+                    </MenuItem>
+                  ))}
+                </Select>
+                <Select
+                  fullWidth
+                  variant="filled"
+                  value={row.priorityLevel}
+                  onChange={(e) =>
+                    handleChange(row.id, "priorityLevel", e.target.value)
+                  }
+                  displayEmpty
+                  sx={{ gridColumn: "span 2" }}
+                >
+                  <MenuItem value="" disabled>
+                    Priority Level
+                  </MenuItem>
+                  {priorityLevelOptions.map((priority) => (
+                    <MenuItem key={priority} value={priority}>
+                      {priority}
+                    </MenuItem>
+                  ))}
+                </Select>
+
+                {/* Salary and Recruiter Info */}
+                <TextField
+                  fullWidth
+                  variant="filled"
+                  label="Salary Offered"
+                  value={row.salaryOffered}
+                  onChange={(e) =>
+                    handleChange(row.id, "salaryOffered", e.target.value)
+                  }
+                  sx={{ gridColumn: "span 2" }}
+                />
+                <TextField
+                  fullWidth
+                  variant="filled"
+                  label="Recruiter Phone"
+                  value={row.recruiterPhone}
+                  onChange={(e) =>
+                    handleChange(row.id, "recruiterPhone", e.target.value)
+                  }
+                  sx={{ gridColumn: "span 2" }}
+                />
+
+                {/* Delete Row */}
+                <IconButton
+                  onClick={() => handleRemoveRow(row.id)}
+                  sx={{ gridColumn: "span 1", color: colors.redAccent[400] }}
+                >
+                  <DeleteIcon />
+                </IconButton>
+              </Box>
             </Box>
           ))}
         </Box>

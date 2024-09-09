@@ -54,6 +54,14 @@ export const getJobApplicationById = async (id) => {
 
 // Create a new job application
 export const createJobApplication = async (jobData) => {
+  console.log("Job Data:", jobData); // Log job data for debugging
+
+  // Ensure jobData is not undefined or empty
+  if (!jobData || Object.keys(jobData).length === 0) {
+    console.error("Job Data is missing or invalid.");
+    throw new Error("Job Data is required to create a job application.");
+  }
+
   try {
     const token = localStorage.getItem("authToken");
     if (!token) {
@@ -65,9 +73,16 @@ export const createJobApplication = async (jobData) => {
       headers: setHeaders(token),
       body: JSON.stringify(jobData),
     });
+
+    // Enhanced error handling to include status code and message from server
     if (!response.ok) {
-      throw new Error("Failed to create job application");
+      const errorDetails = await response.json();
+      console.error(`Error: ${response.status} - ${errorDetails.message}`);
+      throw new Error(
+        `Failed to create job application: ${errorDetails.message}`
+      );
     }
+
     return await response.json();
   } catch (error) {
     console.error("Error creating job application:", error);
@@ -77,6 +92,12 @@ export const createJobApplication = async (jobData) => {
 
 // Bulk create job applications
 export const createBulkJobApplications = async (jobs) => {
+  // Ensure jobs array is not empty
+  if (!jobs || jobs.length === 0) {
+    console.error("No jobs data provided.");
+    throw new Error("Jobs data is required for bulk creation.");
+  }
+
   try {
     const token = localStorage.getItem("authToken");
     if (!token) {
@@ -88,9 +109,16 @@ export const createBulkJobApplications = async (jobs) => {
       headers: setHeaders(token),
       body: JSON.stringify(jobs),
     });
+
+    // Enhanced error handling to include status code and message from server
     if (!response.ok) {
-      throw new Error("Failed to create bulk job applications");
+      const errorDetails = await response.json();
+      console.error(`Error: ${response.status} - ${errorDetails.message}`);
+      throw new Error(
+        `Failed to create bulk job applications: ${errorDetails.message}`
+      );
     }
+
     return await response.json();
   } catch (error) {
     console.error("Error creating bulk job applications:", error);
@@ -100,6 +128,13 @@ export const createBulkJobApplications = async (jobs) => {
 
 // Update a job application
 export const updateJobApplication = async (id, data) => {
+  console.log("Updating Job Data:", data); // Log data for debugging
+
+  if (!data || Object.keys(data).length === 0) {
+    console.error("Job update data is missing.");
+    throw new Error("Job update data is required.");
+  }
+
   try {
     const token = localStorage.getItem("authToken");
     if (!token) {
@@ -125,6 +160,8 @@ export const updateJobApplication = async (id, data) => {
 
 // Delete a job application
 export const deleteJobApplication = async (id) => {
+  console.log("Deleting Job Application with ID:", id); // Log job ID
+
   try {
     const token = localStorage.getItem("authToken");
     if (!token) {
