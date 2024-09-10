@@ -31,7 +31,10 @@ const AiAgentsScene = () => {
             <Card
               sx={{ backgroundColor: colors.primary[400], height: "150px" }}
             >
-              <CardActionArea component={Link} to={agent.route}>
+              <CardActionArea
+                component={Link}
+                to={`/AiAgents/${agent.route.replace(/^\//, "")}`}
+              >
                 <CardContent
                   sx={{
                     display: "flex",
