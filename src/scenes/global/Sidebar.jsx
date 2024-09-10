@@ -211,8 +211,8 @@ const Sidebar = () => {
                 setSelected={setSelected}
               />
               <Item
-                title="Code Block"
-                to="/code-block"
+                title="Code Base"
+                to="/codebase"
                 icon={<CodeOutlinedIcon />}
                 selected={selected}
                 setSelected={setSelected}
