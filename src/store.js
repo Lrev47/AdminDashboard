@@ -19,8 +19,6 @@ import testingAndDebuggingReducer from "./features/testingDebuggingSlice";
 import versionControlReducer from "./features/versionControlSlice";
 import jobTrackerReducer from "./features/jobTrackingSlice";
 
-// Combine all reducers into one
-
 const rootReducer = combineReducers({
   auth: authReducer,
   user: userReducer,
