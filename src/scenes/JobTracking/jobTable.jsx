@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from "react";
 import {
   Box,
-  useTheme,
   Select,
   MenuItem,
   TextField,
@@ -9,9 +8,8 @@ import {
   IconButton,
 } from "@mui/material";
 import { DataGrid } from "@mui/x-data-grid";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { updateJob, deleteJob } from "../../features/jobTrackingSlice"; // Import deleteJob action
-import { tokens } from "../../theme";
 import Header from "../../components/Header";
 import { toast, ToastContainer } from "react-toastify";
 import DeleteIcon from "@mui/icons-material/Delete"; // Import Delete icon
@@ -59,8 +57,7 @@ const formatCurrency = (value) => {
 };
 
 const JobTable = ({ jobs, token }) => {
-  const theme = useTheme();
-  const colors = tokens(theme.palette.mode);
+  const { currentTheme } = useSelector((state) => state.theme); // Use theme from Redux
   const dispatch = useDispatch();
 
   const [selectedRows, setSelectedRows] = useState([]); // State to track selected rows for bulk delete
@@ -249,7 +246,7 @@ const JobTable = ({ jobs, token }) => {
             padding: "8px",
           },
           "& .MuiDataGrid-columnHeaders": {
-            backgroundColor: colors.blueAccent[700],
+            backgroundColor: currentTheme?.blueAccent || "#1E5245",
             borderBottom: "none",
             fontSize: "16px",
             fontWeight: "bold",
@@ -257,14 +254,14 @@ const JobTable = ({ jobs, token }) => {
             padding: "10px",
           },
           "& .MuiDataGrid-virtualScroller": {
-            backgroundColor: colors.primary[400],
+            backgroundColor: currentTheme?.primary || "#141B2D",
           },
           "& .MuiDataGrid-footerContainer": {
             borderTop: "none",
-            backgroundColor: colors.blueAccent[700],
+            backgroundColor: currentTheme?.blueAccent || "#1E5245",
           },
           "& .MuiCheckbox-root": {
-            color: `${colors.greenAccent[200]} !important`,
+            color: `${currentTheme?.greenAccent || "#94E2CD"} !important`,
           },
         }}
       >
