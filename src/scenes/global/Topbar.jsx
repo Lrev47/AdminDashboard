@@ -1,57 +1,92 @@
-import { Box, IconButton, useTheme } from "@mui/material";
-import { useContext } from "react";
+// src/scenes/global/Topbar.jsx
+import React from "react";
+import { Box, IconButton, InputBase } from "@mui/material";
 import { Link } from "react-router-dom";
-import { ColorModeContext, tokens } from "../../theme";
-import InputBase from "@mui/material/InputBase";
-import LightModeOutlinedIcon from "@mui/icons-material/LightModeOutlined";
-import DarkModeOutlinedIcon from "@mui/icons-material/DarkModeOutlined";
-import NotificationsOutlinedIcon from "@mui/icons-material/NotificationsOutlined";
-import SettingsOutlinedIcon from "@mui/icons-material/SettingsOutlined";
-import PersonOutlinedIcon from "@mui/icons-material/PersonOutlined";
-import SearchIcon from "@mui/icons-material/Search";
+import { useSelector, useDispatch } from "react-redux";
+import { useTheme } from "@mui/material/styles";
+import {
+  WbSunny as SunIcon,
+  NightsStay as MoonIcon,
+  NotificationsOutlined as NotificationsIcon,
+  SettingsOutlined as SettingsIcon,
+  PersonOutlined as PersonIcon,
+  Search as SearchIcon,
+} from "@mui/icons-material";
+import { toggleMode } from "../../features/themeSlice";
 
 const Topbar = () => {
   const theme = useTheme();
-  const colors = tokens(theme.palette.mode);
-  const colorMode = useContext(ColorModeContext);
+  const dispatch = useDispatch();
+  const mode = useSelector((state) => state.theme.mode);
+
+  const handleToggleMode = () => {
+    dispatch(toggleMode());
+  };
 
   return (
-    <Box display="flex" justifyContent="space-between" p={2}>
+    <Box
+      display="flex"
+      justifyContent="space-between"
+      alignItems="center"
+      p={2}
+      bgcolor={theme.palette.background.paper}
+      boxShadow={1}
+    >
       {/* SEARCH BAR */}
       <Box
         display="flex"
-        backgroundColor={colors.primary[400]}
+        backgroundColor={theme.palette.background.paper}
         borderRadius="3px"
+        alignItems="center"
+        sx={{
+          width: { xs: "100%", sm: "auto" },
+          flexGrow: { xs: 1, sm: 0 },
+        }}
       >
-        <InputBase sx={{ ml: 2, flex: 1 }} placeholder="Search" />
+        <InputBase
+          sx={{ ml: 2, flex: 1, color: theme.palette.text.primary }}
+          placeholder="Search"
+          inputProps={{ "aria-label": "search" }}
+        />
         <IconButton type="button" sx={{ p: 1 }}>
-          <SearchIcon />
+          <SearchIcon sx={{ color: "inherit" }} />
         </IconButton>
       </Box>
 
       {/* ICONS */}
-      <Box display="flex">
-        <IconButton onClick={colorMode.toggleColorMode}>
-          {theme.palette.mode === "dark" ? (
-            <DarkModeOutlinedIcon />
+      <Box display="flex" alignItems="center" gap={1}>
+        {/* Theme Toggle */}
+
+        <IconButton onClick={handleToggleMode} color="inherit">
+          {mode === "dark" ? (
+            <SunIcon sx={{ color: "inherit" }} />
           ) : (
-            <LightModeOutlinedIcon />
+            <MoonIcon sx={{ color: "inherit" }} />
           )}
         </IconButton>
 
-        <IconButton>
-          <NotificationsOutlinedIcon />
+        {/* Notifications */}
+        <IconButton color="inherit">
+          <NotificationsIcon />
         </IconButton>
 
-        <Link to="/settings">
-          <IconButton>
-            <SettingsOutlinedIcon />
+        {/* Settings */}
+        <Link
+          to="/settings"
+          style={{ color: "inherit", textDecoration: "none" }}
+        >
+          <IconButton color="inherit">
+            <SettingsIcon />
           </IconButton>
         </Link>
 
-        <Link to="/profile">
-          <IconButton>
-            <PersonOutlinedIcon />
+        {/* Profile */}
+        <Link
+          to="/profile"
+          style={{ color: "inherit", textDecoration: "none" }}
+        >
+          <IconButton color="inherit">
+            <PersonIcon />
           </IconButton>
         </Link>
       </Box>

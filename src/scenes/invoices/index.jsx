@@ -1,12 +1,12 @@
-import { Box, Typography, useTheme } from "@mui/material";
+import { Box, Typography } from "@mui/material";
 import { DataGrid } from "@mui/x-data-grid";
-import { tokens } from "../../theme";
-import { mockDataInvoices } from "../../data/mockData";
+import { useSelector } from "react-redux"; // To use theme from Redux
 import Header from "../../components/Header";
+import { mockDataInvoices } from "../../data/mockData";
 
 const Invoices = () => {
-  const theme = useTheme();
-  const colors = tokens(theme.palette.mode);
+  const { currentTheme } = useSelector((state) => state.theme); // Get theme from Redux
+
   const columns = [
     { field: "id", headerName: "ID" },
     {
@@ -30,7 +30,7 @@ const Invoices = () => {
       headerName: "Cost",
       flex: 1,
       renderCell: (params) => (
-        <Typography color={colors.greenAccent[500]}>
+        <Typography color={currentTheme.greenAccent[500]}>
           ${params.row.cost}
         </Typography>
       ),
@@ -56,21 +56,21 @@ const Invoices = () => {
             borderBottom: "none",
           },
           "& .name-column--cell": {
-            color: colors.greenAccent[300],
+            color: currentTheme.greenAccent[300],
           },
           "& .MuiDataGrid-columnHeaders": {
-            backgroundColor: colors.blueAccent[700],
+            backgroundColor: currentTheme.blueAccent[700],
             borderBottom: "none",
           },
           "& .MuiDataGrid-virtualScroller": {
-            backgroundColor: colors.primary[400],
+            backgroundColor: currentTheme.primary[400],
           },
           "& .MuiDataGrid-footerContainer": {
             borderTop: "none",
-            backgroundColor: colors.blueAccent[700],
+            backgroundColor: currentTheme.blueAccent[700],
           },
           "& .MuiCheckbox-root": {
-            color: `${colors.greenAccent[200]} !important`,
+            color: `${currentTheme.greenAccent[200]} !important`,
           },
         }}
       >

@@ -1,10 +1,10 @@
-import { useState, useEffect } from "react";
+// src/scenes/global/Sidebar.jsx
+import React, { useState, useEffect } from "react";
 import { ProSidebar, Menu, MenuItem } from "react-pro-sidebar";
-import { Box, IconButton, Typography, useTheme, Collapse } from "@mui/material";
+import { Box, IconButton, Typography, Collapse } from "@mui/material";
 import { Link } from "react-router-dom";
 import "react-pro-sidebar/dist/css/styles.css";
-import { tokens } from "../../theme";
-import { useSelector } from "react-redux"; // Importing useSelector to access Redux store
+import { useTheme } from "@mui/material/styles"; // Correctly access MUI theme
 import HomeOutlinedIcon from "@mui/icons-material/HomeOutlined";
 import PeopleOutlinedIcon from "@mui/icons-material/PeopleOutlined";
 import ContactsOutlinedIcon from "@mui/icons-material/ContactsOutlined";
@@ -25,18 +25,19 @@ import CalculateOutlinedIcon from "@mui/icons-material/CalculateOutlined";
 import NoteOutlinedIcon from "@mui/icons-material/NoteOutlined";
 import TerminalOutlinedIcon from "@mui/icons-material/TerminalOutlined";
 import BusinessCenterOutlinedIcon from "@mui/icons-material/BusinessCenterOutlined";
+import { useSelector } from "react-redux"; // For accessing user data
 
+// Sidebar item component
 const Item = ({ title, to, icon, selected, setSelected }) => {
-  const theme = useTheme();
-  const colors = tokens(theme.palette.mode);
+  const theme = useTheme(); // Use MUI's useTheme hook
   return (
     <MenuItem
       active={selected === title}
       style={{
-        color: colors.grey[100],
+        color: theme.palette.text.primary,
       }}
       onClick={() => setSelected(title)}
-      icon={icon}
+      icon={React.cloneElement(icon, { color: "inherit" })} // Ensure icon inherits color
     >
       <Typography>{title}</Typography>
       <Link to={to} />
@@ -45,12 +46,10 @@ const Item = ({ title, to, icon, selected, setSelected }) => {
 };
 
 const Sidebar = () => {
-  const theme = useTheme();
-  const colors = tokens(theme.palette.mode);
+  const theme = useTheme(); // Use MUI's useTheme hook
   const [isCollapsed, setIsCollapsed] = useState(false);
   const [selected, setSelected] = useState("Dashboard");
 
-  // State for controlling collapse
   const [isPagesOpen, setIsPagesOpen] = useState(true);
   const [isChartsOpen, setIsChartsOpen] = useState(true);
   const [isDataOpen, setIsDataOpen] = useState(true);
@@ -61,7 +60,6 @@ const Sidebar = () => {
   const handleDataToggle = () => setIsDataOpen(!isDataOpen);
   const handleToolsToggle = () => setIsToolsOpen(!isToolsOpen);
 
-  // Getting user data from Redux store
   const user = useSelector((state) => state.auth.user);
 
   useEffect(() => {
@@ -73,15 +71,15 @@ const Sidebar = () => {
   return (
     <Box
       sx={{
-        height: "100vh", // Full viewport height
+        height: "100vh",
         display: "flex",
-        flexDirection: "column", // Make the sidebar content stack vertically
+        flexDirection: "column",
         "& .pro-sidebar-inner": {
-          background: `${colors.primary[400]} !important`,
+          background: `${theme.palette.background.paper} !important`,
           display: "flex",
           flexDirection: "column",
-          height: "100%", // Ensure the inner sidebar takes full height
-          overflowY: "auto", // Enable scrolling if the content exceeds the height
+          height: "100%",
+          overflowY: "auto",
         },
         "& .pro-icon-wrapper": {
           backgroundColor: "transparent !important",
@@ -90,23 +88,23 @@ const Sidebar = () => {
           padding: "5px 35px 5px 20px !important",
         },
         "& .pro-inner-item:hover": {
-          color: "#868dfb !important",
+          color: `${theme.palette.secondary.main} !important`, // Changed hover color to green
         },
         "& .pro-menu-item.active": {
-          color: "#6870fa !important",
+          color: `${theme.palette.secondary.main} !important`,
         },
         "& ::-webkit-scrollbar": {
           width: "6px",
         },
         "& ::-webkit-scrollbar-thumb": {
-          backgroundColor: "#4a4fda",
+          backgroundColor: theme.palette.primary.main,
           borderRadius: "6px",
         },
         "& ::-webkit-scrollbar-track": {
-          backgroundColor: `${colors.primary[400]}`,
+          backgroundColor: theme.palette.background.paper,
         },
         scrollbarWidth: "thin",
-        scrollbarColor: `6870fa ${colors.primary[400]}`,
+        scrollbarColor: `${theme.palette.primary.main} ${theme.palette.background.paper}`,
       }}
     >
       <ProSidebar collapsed={isCollapsed}>
@@ -117,7 +115,7 @@ const Sidebar = () => {
             icon={isCollapsed ? <MenuOutlinedIcon /> : undefined}
             style={{
               margin: "10px 0 20px 0",
-              color: colors.grey[100],
+              color: theme.palette.text.primary,
             }}
           >
             {!isCollapsed && (
@@ -127,7 +125,7 @@ const Sidebar = () => {
                 alignItems="center"
                 ml="15px"
               >
-                <Typography variant="h3" color={colors.grey[100]}>
+                <Typography variant="h3" color={theme.palette.text.primary}>
                   Life OS
                 </Typography>
                 <IconButton onClick={() => setIsCollapsed(!isCollapsed)}>
@@ -144,21 +142,29 @@ const Sidebar = () => {
                   alt="profile-user"
                   width="100px"
                   height="100px"
-                  src={user?.avatar || "../../assets/user.png"}
-                  style={{ cursor: "pointer", borderRadius: "50%" }}
+                  src={
+                    user?.avatar ||
+                    "https://imagizer.imageshack.com/img924/3773/y0xGvl.png"
+                  }
+                  style={{
+                    cursor: "pointer",
+                    borderRadius: "50%",
+                    objectFit: "cover",
+                    objectPosition: "center",
+                  }}
                 />
               </Box>
 
               <Box textAlign="center">
                 <Typography
                   variant="h2"
-                  color={colors.grey[100]}
+                  color={theme.palette.text.primary}
                   fontWeight="bold"
                   sx={{ m: "10px 0 0 0" }}
                 >
                   {user ? user.firstName : "Loading..."}
                 </Typography>
-                <Typography variant="h5" color={colors.greenAccent[500]}>
+                <Typography variant="h5" color={theme.palette.secondary.main}>
                   {user ? user.occupation : "Loading..."}
                 </Typography>
               </Box>
@@ -166,9 +172,10 @@ const Sidebar = () => {
           )}
 
           <Box paddingLeft={isCollapsed ? undefined : "10%"}>
+            {/* Dashboard Menu Item */}
             <Item
               title="Dashboard"
-              to="/"
+              to="/dashboard"
               icon={<HomeOutlinedIcon />}
               selected={selected}
               setSelected={setSelected}
@@ -177,7 +184,7 @@ const Sidebar = () => {
             {/* Collapsible Pages Section */}
             <Typography
               variant="h6"
-              color={colors.grey[300]}
+              color={theme.palette.text.primary}
               sx={{
                 m: "15px 0 5px 20px",
                 display: "flex",
@@ -244,7 +251,7 @@ const Sidebar = () => {
             {/* Collapsible Charts Section */}
             <Typography
               variant="h6"
-              color={colors.grey[300]}
+              color={theme.palette.text.primary}
               sx={{
                 m: "15px 0 5px 20px",
                 display: "flex",
@@ -293,16 +300,17 @@ const Sidebar = () => {
               />
             </Collapse>
 
+            {/* Collapsible Tools Section */}
             <Typography
               variant="h6"
-              color={colors.grey[300]}
+              color={theme.palette.text.primary}
               sx={{
                 m: "15px 0 5px 20px",
                 display: "flex",
                 alignItems: "center",
                 cursor: "pointer",
               }}
-              onClick={handleToolsToggle} // New toggle for Tools
+              onClick={handleToolsToggle}
             >
               Tools
               <ExpandMoreIcon
@@ -314,8 +322,6 @@ const Sidebar = () => {
               />
             </Typography>
             <Collapse in={isToolsOpen}>
-              {" "}
-              {/* New collapsible section for Tools */}
               <Item
                 title="Calculator"
                 to="/calculator"
@@ -349,7 +355,7 @@ const Sidebar = () => {
             {/* Collapsible Data Section */}
             <Typography
               variant="h6"
-              color={colors.grey[300]}
+              color={theme.palette.text.primary}
               sx={{
                 m: "15px 0 5px 20px",
                 display: "flex",

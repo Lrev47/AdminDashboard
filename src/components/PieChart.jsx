@@ -1,11 +1,11 @@
+// src/components/PieChart.jsx
 import { ResponsivePie } from "@nivo/pie";
-import { tokens } from "../theme";
-import { useTheme } from "@mui/material";
+import { useTheme, alpha } from "@mui/material";
 import { mockPieData as data } from "../data/mockData";
 
 const PieChart = () => {
-  const theme = useTheme();
-  const colors = tokens(theme.palette.mode);
+  const theme = useTheme(); // Access MUI's theme
+
   return (
     <ResponsivePie
       data={data}
@@ -13,27 +13,27 @@ const PieChart = () => {
         axis: {
           domain: {
             line: {
-              stroke: colors.grey[100],
+              stroke: theme.palette.text.primary, // Using MUI palette
             },
           },
           legend: {
             text: {
-              fill: colors.grey[100],
+              fill: theme.palette.text.primary, // Using MUI palette
             },
           },
           ticks: {
             line: {
-              stroke: colors.grey[100],
+              stroke: theme.palette.grey[100], // Using MUI palette
               strokeWidth: 1,
             },
             text: {
-              fill: colors.grey[100],
+              fill: theme.palette.text.primary, // Using MUI palette
             },
           },
         },
         legends: {
           text: {
-            fill: colors.grey[100],
+            fill: theme.palette.text.primary, // Legend text color from palette
           },
         },
       }}
@@ -47,7 +47,7 @@ const PieChart = () => {
         modifiers: [["darker", 0.2]],
       }}
       arcLinkLabelsSkipAngle={10}
-      arcLinkLabelsTextColor={colors.grey[100]}
+      arcLinkLabelsTextColor={theme.palette.grey[100]} // Using MUI palette
       arcLinkLabelsThickness={2}
       arcLinkLabelsColor={{ from: "color" }}
       enableArcLabels={false}
@@ -62,7 +62,7 @@ const PieChart = () => {
           id: "dots",
           type: "patternDots",
           background: "inherit",
-          color: "rgba(255, 255, 255, 0.3)",
+          color: alpha(theme.palette.text.primary, 0.3), // Using MUI palette with opacity
           size: 4,
           padding: 1,
           stagger: true,
@@ -71,7 +71,7 @@ const PieChart = () => {
           id: "lines",
           type: "patternLines",
           background: "inherit",
-          color: "rgba(255, 255, 255, 0.3)",
+          color: alpha(theme.palette.text.primary, 0.3), // Using MUI palette with opacity
           rotation: -45,
           lineWidth: 6,
           spacing: 10,
@@ -87,7 +87,7 @@ const PieChart = () => {
           itemsSpacing: 0,
           itemWidth: 100,
           itemHeight: 18,
-          itemTextColor: "#999",
+          itemTextColor: theme.palette.text.primary, // Using MUI palette
           itemDirection: "left-to-right",
           itemOpacity: 1,
           symbolSize: 18,
@@ -96,7 +96,7 @@ const PieChart = () => {
             {
               on: "hover",
               style: {
-                itemTextColor: "#000",
+                itemTextColor: theme.palette.text.primary, // Using MUI palette
               },
             },
           ],

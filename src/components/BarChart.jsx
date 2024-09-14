@@ -1,41 +1,40 @@
 import { useTheme } from "@mui/material";
 import { ResponsiveBar } from "@nivo/bar";
-import { tokens } from "../theme";
+import { useSelector } from "react-redux";
 import { mockBarData as data } from "../data/mockData";
 
 const BarChart = ({ isDashboard = false }) => {
-  const theme = useTheme();
-  const colors = tokens(theme.palette.mode);
+  const theme = useTheme(); // Material-UI theme
+  const { currentTheme } = useSelector((state) => state.theme); // Access the current theme from Redux
 
   return (
     <ResponsiveBar
       data={data}
       theme={{
-        // added
         axis: {
           domain: {
             line: {
-              stroke: colors.grey[100],
+              stroke: currentTheme?.greyMain || theme.palette.grey[500], // Use dynamic color from Redux theme or fallback
             },
           },
           legend: {
             text: {
-              fill: colors.grey[100],
+              fill: currentTheme?.text || theme.palette.text.primary, // Use dynamic text color
             },
           },
           ticks: {
             line: {
-              stroke: colors.grey[100],
+              stroke: currentTheme?.greyMain || theme.palette.grey[500], // Use dynamic color
               strokeWidth: 1,
             },
             text: {
-              fill: colors.grey[100],
+              fill: currentTheme?.text || theme.palette.text.primary, // Use dynamic text color
             },
           },
         },
         legends: {
           text: {
-            fill: colors.grey[100],
+            fill: currentTheme?.text || theme.palette.text.primary, // Use dynamic text color
           },
         },
       }}
@@ -45,7 +44,7 @@ const BarChart = ({ isDashboard = false }) => {
       padding={0.3}
       valueScale={{ type: "linear" }}
       indexScale={{ type: "band", round: true }}
-      colors={{ scheme: "nivo" }}
+      colors={{ scheme: "nivo" }} // Color scheme for the bars
       defs={[
         {
           id: "dots",
@@ -76,7 +75,7 @@ const BarChart = ({ isDashboard = false }) => {
         tickSize: 5,
         tickPadding: 5,
         tickRotation: 0,
-        legend: isDashboard ? undefined : "country", // changed
+        legend: isDashboard ? undefined : "country", // If it's dashboard, no legend
         legendPosition: "middle",
         legendOffset: 32,
       }}
@@ -84,7 +83,7 @@ const BarChart = ({ isDashboard = false }) => {
         tickSize: 5,
         tickPadding: 5,
         tickRotation: 0,
-        legend: isDashboard ? undefined : "food", // changed
+        legend: isDashboard ? undefined : "food", // If it's dashboard, no legend
         legendPosition: "middle",
         legendOffset: -40,
       }}

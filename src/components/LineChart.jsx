@@ -1,11 +1,11 @@
 import { ResponsiveLine } from "@nivo/line";
 import { useTheme } from "@mui/material";
-import { tokens } from "../theme";
+import { useSelector } from "react-redux";
 import { mockLineData as data } from "../data/mockData";
 
 const LineChart = ({ isCustomLineColors = false, isDashboard = false }) => {
-  const theme = useTheme();
-  const colors = tokens(theme.palette.mode);
+  const theme = useTheme(); // Material-UI theme
+  const { currentTheme } = useSelector((state) => state.theme); // Access the current theme from Redux
 
   return (
     <ResponsiveLine
@@ -14,36 +14,36 @@ const LineChart = ({ isCustomLineColors = false, isDashboard = false }) => {
         axis: {
           domain: {
             line: {
-              stroke: colors.grey[100],
+              stroke: currentTheme?.greyMain || theme.palette.grey[100], // Dynamic color from Redux
             },
           },
           legend: {
             text: {
-              fill: colors.grey[100],
+              fill: currentTheme?.text || theme.palette.text.primary, // Dynamic text color
             },
           },
           ticks: {
             line: {
-              stroke: colors.grey[100],
+              stroke: currentTheme?.greyMain || theme.palette.grey[100], // Dynamic color
               strokeWidth: 1,
             },
             text: {
-              fill: colors.grey[100],
+              fill: currentTheme?.text || theme.palette.text.primary, // Dynamic text color
             },
           },
         },
         legends: {
           text: {
-            fill: colors.grey[100],
+            fill: currentTheme?.text || theme.palette.text.primary, // Legend text color
           },
         },
         tooltip: {
           container: {
-            color: colors.primary[500],
+            color: currentTheme?.primary || theme.palette.primary.main, // Tooltip primary color
           },
         },
       }}
-      colors={isDashboard ? { datum: "color" } : { scheme: "nivo" }} // added
+      colors={isDashboard ? { datum: "color" } : { scheme: "nivo" }} // Use default color scheme or dynamic based on dashboard
       margin={{ top: 50, right: 110, bottom: 50, left: 60 }}
       xScale={{ type: "point" }}
       yScale={{
@@ -62,17 +62,17 @@ const LineChart = ({ isCustomLineColors = false, isDashboard = false }) => {
         tickSize: 0,
         tickPadding: 5,
         tickRotation: 0,
-        legend: isDashboard ? undefined : "transportation", // added
+        legend: isDashboard ? undefined : "transportation", // Legend for the x-axis
         legendOffset: 36,
         legendPosition: "middle",
       }}
       axisLeft={{
         orient: "left",
-        tickValues: 5, // added
+        tickValues: 5, // Number of tick marks on the y-axis
         tickSize: 3,
         tickPadding: 5,
         tickRotation: 0,
-        legend: isDashboard ? undefined : "count", // added
+        legend: isDashboard ? undefined : "count", // Legend for the y-axis
         legendOffset: -40,
         legendPosition: "middle",
       }}

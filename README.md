@@ -68,6 +68,7 @@ The main goals of this project are:
    - Integrating predictive analytics to forecast outcomes.
 
 7. **Second Brain Expansion**: Build on the "Second Brain" concept to:
+
    - Include more advanced categorization, tagging, and search functionality.
    - Allow users to store notes, ideas, and references in a structured manner.
    - Enable connections between knowledge items to visualize relationships and dependencies.

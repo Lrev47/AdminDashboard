@@ -7,29 +7,39 @@ import {
   Typography,
   useTheme,
 } from "@mui/material";
-import { tokens } from "../../theme";
 import { Link } from "react-router-dom";
 import aiAgentTeams from "../../data/AiAgentMockData"; // Import the mock data
 
 const AiAgentsScene = () => {
   const theme = useTheme();
-  const colors = tokens(theme.palette.mode);
 
   return (
-    <Box m="20px">
+    <Box
+      m={2.5} // m={2.5} corresponds to 20px
+      bgcolor={theme.palette.primary.main} // Set background color to primary
+      borderRadius={theme.shape.borderRadius} // Optional: Add border radius for aesthetics
+      p={2.5} // Optional: Add padding for inner spacing
+    >
       <Typography
         variant="h2"
-        color={colors.grey[100]}
+        color={theme.palette.text.primary} // Use theme's text primary color
         fontWeight="bold"
-        sx={{ mb: "20px" }}
+        sx={{ mb: 2.5 }} // mb={2.5} corresponds to 20px
       >
         AI Agents
       </Typography>
-      <Box display="grid" gridTemplateColumns="repeat(12, 1fr)" gap="40px">
+      <Box
+        display="grid"
+        gridTemplateColumns="repeat(12, 1fr)"
+        gap={5} // gap={5} corresponds to 40px
+      >
         {aiAgentTeams.map((agent, index) => (
           <Box gridColumn="span 6" key={index}>
             <Card
-              sx={{ backgroundColor: colors.primary[400], height: "150px" }}
+              sx={{
+                backgroundColor: theme.palette.secondary.main,
+                height: "150px",
+              }}
             >
               <CardActionArea
                 component={Link}
@@ -46,7 +56,7 @@ const AiAgentsScene = () => {
                   <Typography
                     variant="h5"
                     fontWeight="600"
-                    color={colors.grey[100]}
+                    color={theme.palette.text.primary} // Use greyLight from theme
                     align="center"
                   >
                     {agent.teamName}

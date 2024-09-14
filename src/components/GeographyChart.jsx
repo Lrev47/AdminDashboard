@@ -1,12 +1,13 @@
 import { useTheme } from "@mui/material";
 import { ResponsiveChoropleth } from "@nivo/geo";
 import { geoFeatures } from "../data/mockGeoFeatures";
-import { tokens } from "../theme";
+import { useSelector } from "react-redux";
 import { mockGeographyData as data } from "../data/mockData";
 
 const GeographyChart = ({ isDashboard = false }) => {
-  const theme = useTheme();
-  const colors = tokens(theme.palette.mode);
+  const theme = useTheme(); // Material-UI theme
+  const { currentTheme } = useSelector((state) => state.theme); // Access the current theme from Redux
+
   return (
     <ResponsiveChoropleth
       data={data}
@@ -14,34 +15,34 @@ const GeographyChart = ({ isDashboard = false }) => {
         axis: {
           domain: {
             line: {
-              stroke: colors.grey[100],
+              stroke: currentTheme?.greyMain || theme.palette.grey[500], // Use dynamic color from Redux
             },
           },
           legend: {
             text: {
-              fill: colors.grey[100],
+              fill: currentTheme?.text || theme.palette.text.primary, // Use dynamic text color
             },
           },
           ticks: {
             line: {
-              stroke: colors.grey[100],
+              stroke: currentTheme?.greyMain || theme.palette.grey[500], // Use dynamic color
               strokeWidth: 1,
             },
             text: {
-              fill: colors.grey[100],
+              fill: currentTheme?.text || theme.palette.text.primary, // Use dynamic text color
             },
           },
         },
         legends: {
           text: {
-            fill: colors.grey[100],
+            fill: currentTheme?.text || theme.palette.text.primary, // Legend text color
           },
         },
       }}
       features={geoFeatures.features}
       margin={{ top: 0, right: 0, bottom: 0, left: 0 }}
       domain={[0, 1000000]}
-      unknownColor="#666666"
+      unknownColor={currentTheme?.greyMain || "#666666"} // Dynamic unknown color
       label="properties.name"
       valueFormat=".2s"
       projectionScale={isDashboard ? 40 : 150}
@@ -62,7 +63,7 @@ const GeographyChart = ({ isDashboard = false }) => {
                 itemWidth: 94,
                 itemHeight: 18,
                 itemDirection: "left-to-right",
-                itemTextColor: colors.grey[100],
+                itemTextColor: currentTheme?.text || theme.palette.text.primary, // Dynamic text color
                 itemOpacity: 0.85,
                 symbolSize: 18,
                 effects: [
