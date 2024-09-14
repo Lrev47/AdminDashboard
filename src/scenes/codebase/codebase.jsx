@@ -1,4 +1,4 @@
-// CodeSnippetPage.jsx
+// src/scenes/codebase/CodeBase.jsx
 import React, { useState } from "react";
 import {
   Container,
@@ -11,12 +11,14 @@ import {
   Accordion,
   AccordionSummary,
   AccordionDetails,
+  useTheme,
 } from "@mui/material";
 import { CopyAllOutlined, ExpandMore } from "@mui/icons-material";
 import { Prism as SyntaxHighlighter } from "react-syntax-highlighter";
 import { darcula } from "react-syntax-highlighter/dist/esm/styles/prism";
 
 const CodeBase = () => {
+  const theme = useTheme(); // Access MUI's theme
   const [code, setCode] = useState("");
   const [title, setTitle] = useState("");
   const [language, setLanguage] = useState("javascript");
@@ -30,6 +32,11 @@ const CodeBase = () => {
 
   // Save the code snippet
   const handleSaveSnippet = () => {
+    if (title.trim() === "" || topic.trim() === "" || code.trim() === "") {
+      // Optionally, handle validation (e.g., show an error message)
+      return;
+    }
+
     const newSnippet = {
       code,
       title,
@@ -112,7 +119,14 @@ const CodeBase = () => {
 
       {/* Save button */}
       <Box mt={2}>
-        <Button variant="contained" color="primary" onClick={handleSaveSnippet}>
+        <Button
+          variant="contained"
+          color="primary"
+          onClick={handleSaveSnippet}
+          disabled={
+            title.trim() === "" || topic.trim() === "" || code.trim() === ""
+          }
+        >
           Save Snippet
         </Button>
       </Box>
@@ -142,12 +156,17 @@ const CodeBase = () => {
                           display="flex"
                           justifyContent="space-between"
                           alignItems="center"
+                          mb={1}
                         >
-                          <Typography variant="body1">
+                          <Typography
+                            variant="body1"
+                            color={theme.palette.text.primary}
+                          >
                             {snippet.language}
                           </Typography>
                           <IconButton
                             onClick={() => handleCopyToClipboard(snippet)}
+                            aria-label="copy code"
                           >
                             <CopyAllOutlined />
                           </IconButton>
