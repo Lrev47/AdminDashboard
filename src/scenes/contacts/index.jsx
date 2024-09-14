@@ -1,13 +1,11 @@
 import { Box } from "@mui/material";
 import { DataGrid, GridToolbar } from "@mui/x-data-grid";
-import { tokens } from "../../theme";
+import { useSelector } from "react-redux"; // Import useSelector from react-redux
 import { mockDataContacts } from "../../data/mockData";
 import Header from "../../components/Header";
-import { useTheme } from "@mui/material";
 
 const Contacts = () => {
-  const theme = useTheme();
-  const colors = tokens(theme.palette.mode);
+  const { currentTheme } = useSelector((state) => state.theme); // Get the current theme from Redux
 
   const columns = [
     { field: "id", headerName: "ID", flex: 0.5 },
@@ -69,24 +67,24 @@ const Contacts = () => {
             borderBottom: "none",
           },
           "& .name-column--cell": {
-            color: colors.greenAccent[300],
+            color: currentTheme?.greenAccent || "#94e2cd", // Use the current theme color
           },
           "& .MuiDataGrid-columnHeaders": {
-            backgroundColor: colors.blueAccent[700],
+            backgroundColor: currentTheme?.blueAccent || "#3e4396", // Use the current theme color
             borderBottom: "none",
           },
           "& .MuiDataGrid-virtualScroller": {
-            backgroundColor: colors.primary[400],
+            backgroundColor: currentTheme?.primary || "#141b2d", // Use the current theme color
           },
           "& .MuiDataGrid-footerContainer": {
             borderTop: "none",
-            backgroundColor: colors.blueAccent[700],
+            backgroundColor: currentTheme?.blueAccent || "#3e4396", // Use the current theme color
           },
           "& .MuiCheckbox-root": {
-            color: `${colors.greenAccent[200]} !important`,
+            color: `${currentTheme?.greenAccent || "#4CCEAC"} !important`, // Use the current theme color
           },
           "& .MuiDataGrid-toolbarContainer .MuiButton-text": {
-            color: `${colors.grey[100]} !important`,
+            color: `${currentTheme?.grey || "#e0e0e0"} !important`, // Use the current theme color
           },
         }}
       >
