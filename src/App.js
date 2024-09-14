@@ -1,9 +1,13 @@
-import { useState, useEffect } from "react";
+// src/App.jsx
+import React, { useState, useEffect } from "react";
 import { Routes, Route, useNavigate } from "react-router-dom";
+import { CssBaseline, ThemeProvider, Box } from "@mui/material";
+
 import Topbar from "./scenes/global/Topbar";
 import Sidebar from "./scenes/global/Sidebar";
+import { useMode } from "./useMode";
 import Dashboard from "./scenes/dashboard";
-import Breadcrumbs from "./components/breadCrumbs";
+import Breadcrumbs from "./components/breadCrumbs"; // Corrected capitalization
 import Team from "./scenes/team";
 import Invoices from "./scenes/invoices";
 import Contacts from "./scenes/contacts";
@@ -28,11 +32,9 @@ import References from "./scenes/secondBrain/references";
 import Calendar from "./scenes/calendar/calendar";
 import JobTracker from "./scenes/JobTracking/jobTracker";
 import LogInSignUp from "./scenes/LogInSignUp/LogInSignUp";
-import { CssBaseline, ThemeProvider, Box } from "@mui/material";
-import { ColorModeContext, useMode } from "./theme";
 
 function App() {
-  const [theme, colorMode] = useMode();
+  const [theme] = useMode(); // Custom hook to manage MUI theme
   const [isSidebar, setIsSidebar] = useState(true);
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const navigate = useNavigate();
@@ -41,83 +43,99 @@ function App() {
     const token = localStorage.getItem("authToken");
     if (token) {
       setIsAuthenticated(true);
+    } else {
+      setIsAuthenticated(false);
+      navigate("/"); // Redirect to login if not authenticated
     }
   }, [navigate]);
 
   return (
-    <ColorModeContext.Provider value={colorMode}>
-      <ThemeProvider theme={theme}>
-        <CssBaseline />
+    <ThemeProvider theme={theme}>
+      <CssBaseline />
 
-        <Box display="flex" height="100vh">
-          {isAuthenticated && <Sidebar isSidebar={isSidebar} />}
-          <Box flexGrow={1} display="flex" flexDirection="column">
-            {isAuthenticated && <Topbar setIsSidebar={setIsSidebar} />}
-            <Box flexGrow={1} overflow="auto">
-              {isAuthenticated && <Breadcrumbs />}
-              <Routes>
-                <Route path="/" element={<LogInSignUp />} />
+      <Box
+        display="flex"
+        height="100vh"
+        bgcolor={theme.palette.primary.main} // Set background color to primary
+      >
+        {/* Sidebar: Render only if authenticated */}
+        {isAuthenticated && <Sidebar isSidebar={isSidebar} />}
 
-                {/* Protected routes */}
-                {isAuthenticated ? (
-                  <>
-                    <Route path="/dashboard" element={<Dashboard />} />
-                    <Route path="/team" element={<Team />} />
+        {/* Main Content Area */}
+        <Box flexGrow={1} display="flex" flexDirection="column">
+          {/* Topbar: Render only if authenticated */}
+          {isAuthenticated && <Topbar setIsSidebar={setIsSidebar} />}
 
-                    {/* Second Brain Landing Page */}
-                    <Route
-                      path="/second-brain"
-                      element={<SecondBrainLandingPage />}
-                    />
+          {/* Content and Breadcrumbs */}
+          <Box flexGrow={1} overflow="auto">
+            {/* Breadcrumbs: Render only if authenticated */}
+            {isAuthenticated && <Breadcrumbs />}
 
-                    {/* Independent full-page subroutes for Second Brain */}
-                    <Route
-                      path="/second-brain/future-projects"
-                      element={<FutureProjects />}
-                    />
-                    <Route path="/second-brain/wikis" element={<Wikis />} />
-                    <Route path="/second-brain/notes" element={<Notes />} />
-                    <Route
-                      path="/second-brain/how-to-guides"
-                      element={<HowToGuides />}
-                    />
-                    <Route
-                      path="/second-brain/references"
-                      element={<References />}
-                    />
+            {/* Define Routes */}
+            <Routes>
+              {/* Public Routes */}
+              <Route path="/" element={<LogInSignUp />} />
 
-                    <Route path="/contacts" element={<Contacts />} />
-                    <Route path="/codebase" element={<CodeBase />} />
-                    <Route path="/calculator" element={<Calculator />} />
-                    <Route path="/invoices" element={<Invoices />} />
-                    {/* AI Agents Scene */}
-                    <Route path="/AiAgents" element={<AiAgentsScene />} />
-                    {/* Dynamic route for AI agent workflows */}
-                    <Route
-                      path="/AiAgents/:workflowName"
-                      element={<AiAgentInterface />}
-                    />
+              {/* Protected Routes */}
+              {isAuthenticated ? (
+                <>
+                  <Route path="/dashboard" element={<Dashboard />} />
+                  <Route path="/team" element={<Team />} />
 
-                    <Route path="/form" element={<Form />} />
-                    <Route path="/bar" element={<Bar />} />
-                    <Route path="/pie" element={<Pie />} />
-                    <Route path="/job-tracker" element={<JobTracker />} />
-                    <Route path="/profile" element={<ProfilePage />} />
-                    <Route path="/settings" element={<SettingsPage />} />
-                    <Route path="/line" element={<Line />} />
-                    <Route path="/faq" element={<FAQ />} />
-                    <Route path="/calendar" element={<Calendar />} />
-                    <Route path="/geography" element={<Geography />} />
-                  </>
-                ) : (
-                  <Route path="*" element={<LogInSignUp />} />
-                )}
-              </Routes>
-            </Box>
+                  {/* Second Brain Landing Page */}
+                  <Route
+                    path="/second-brain"
+                    element={<SecondBrainLandingPage />}
+                  />
+
+                  {/* Independent full-page subroutes for Second Brain */}
+                  <Route
+                    path="/second-brain/future-projects"
+                    element={<FutureProjects />}
+                  />
+                  <Route path="/second-brain/wikis" element={<Wikis />} />
+                  <Route path="/second-brain/notes" element={<Notes />} />
+                  <Route
+                    path="/second-brain/how-to-guides"
+                    element={<HowToGuides />}
+                  />
+                  <Route
+                    path="/second-brain/references"
+                    element={<References />}
+                  />
+
+                  <Route path="/contacts" element={<Contacts />} />
+                  <Route path="/codebase" element={<CodeBase />} />
+                  <Route path="/calculator" element={<Calculator />} />
+                  <Route path="/invoices" element={<Invoices />} />
+
+                  {/* AI Agents Routes */}
+                  <Route path="/AiAgents" element={<AiAgentsScene />} />
+                  <Route
+                    path="/AiAgents/:workflowName"
+                    element={<AiAgentInterface />}
+                  />
+
+                  <Route path="/form" element={<Form />} />
+                  <Route path="/bar" element={<Bar />} />
+                  <Route path="/pie" element={<Pie />} />
+                  <Route path="/job-tracker" element={<JobTracker />} />
+                  <Route path="/profile" element={<ProfilePage />} />
+                  <Route path="/settings" element={<SettingsPage />} />
+                  <Route path="/line" element={<Line />} />
+                  <Route path="/faq" element={<FAQ />} />
+                  <Route path="/calendar" element={<Calendar />} />
+                  <Route path="/geography" element={<Geography />} />
+                </>
+              ) : (
+                /* Fallback Route: Redirect to LogInSignUp if not authenticated */
+                <Route path="*" element={<LogInSignUp />} />
+              )}
+            </Routes>
           </Box>
         </Box>
-      </ThemeProvider>
-    </ColorModeContext.Provider>
+      </Box>
+    </ThemeProvider>
   );
 }
 
