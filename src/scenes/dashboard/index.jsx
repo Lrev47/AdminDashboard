@@ -1,6 +1,12 @@
-import { Box, Button, IconButton, Typography, useTheme } from "@mui/material";
-import { tokens } from "../../theme";
-import { mockTransactions } from "../../data/mockData";
+// src/scenes/global/Dashboard.jsx
+import {
+  Box,
+  Button,
+  IconButton,
+  Typography,
+  useTheme,
+  styled,
+} from "@mui/material";
 import DownloadOutlinedIcon from "@mui/icons-material/DownloadOutlined";
 import EmailIcon from "@mui/icons-material/Email";
 import PointOfSaleIcon from "@mui/icons-material/PointOfSale";
@@ -12,174 +18,230 @@ import GeographyChart from "../../components/GeographyChart";
 import BarChart from "../../components/BarChart";
 import StatBox from "../../components/StatBox";
 import ProgressCircle from "../../components/ProgressCircle";
+import { mockTransactions } from "../../data/mockData";
+
+// Styled Components for Consistency and Reusability
+const StyledBox = styled(Box)(({ theme }) => ({
+  backgroundColor: theme.palette.background.paper,
+  borderRadius: theme.shape.borderRadius,
+  boxShadow: theme.shadows[3],
+  padding: theme.spacing(2),
+  display: "flex",
+  alignItems: "center",
+  justifyContent: "center",
+}));
+
+const ResponsiveGrid = styled(Box)(({ theme }) => ({
+  display: "grid",
+  gridTemplateColumns: "repeat(auto-fit, minmax(250px, 1fr))",
+  gridAutoRows: "140px",
+  gap: theme.spacing(2.5),
+  marginTop: theme.spacing(2.5),
+}));
 
 const Dashboard = () => {
   const theme = useTheme();
-  const colors = tokens(theme.palette.mode);
 
   return (
     <Box m="20px">
       {/* HEADER */}
-      <Box display="flex" justifyContent="space-between" alignItems="center">
+      <Box
+        display="flex"
+        justifyContent="space-between"
+        alignItems="center"
+        flexWrap="wrap" // Ensures wrapping on smaller screens
+        gap={2} // Spacing between items when wrapped
+        sx={{
+          backgroundColor: theme.palette.background.paper,
+          borderRadius: theme.shape.borderRadius,
+          boxShadow: theme.shadows[3],
+          padding: theme.spacing(2),
+        }}
+      >
         <Header title="DASHBOARD" subtitle="Welcome to your dashboard" />
-
         <Box>
           <Button
+            variant="contained"
+            startIcon={<DownloadOutlinedIcon />}
             sx={{
-              backgroundColor: colors.blueAccent[700],
-              color: colors.grey[100],
+              backgroundColor: theme.palette.secondary.main,
+              color: theme.palette.getContrastText(
+                theme.palette.secondary.main
+              ),
               fontSize: "14px",
               fontWeight: "bold",
               padding: "10px 20px",
+              "&:hover": {
+                backgroundColor: theme.palette.secondary.dark,
+              },
             }}
+            aria-label="Download Reports"
           >
-            <DownloadOutlinedIcon sx={{ mr: "10px" }} />
             Download Reports
           </Button>
         </Box>
       </Box>
 
       {/* GRID & CHARTS */}
-      <Box
-        display="grid"
-        gridTemplateColumns="repeat(12, 1fr)"
-        gridAutoRows="140px"
-        gap="20px"
-      >
-        {/* ROW 1 */}
-        <Box
-          gridColumn="span 3"
-          backgroundColor={colors.primary[400]}
-          display="flex"
-          alignItems="center"
-          justifyContent="center"
-        >
+      <ResponsiveGrid>
+        {/* ROW 1 - StatBoxes */}
+        <StyledBox>
           <StatBox
             title="12,361"
             subtitle="Emails Sent"
-            progress="0.75"
+            progress={0.75}
             increase="+14%"
             icon={
               <EmailIcon
-                sx={{ color: colors.greenAccent[600], fontSize: "26px" }}
+                sx={{
+                  color: theme.palette.success.main,
+                  fontSize: "26px",
+                }}
               />
             }
+            titleColor={theme.palette.text.primary} // Set title color to primary
+            subtitleColor={theme.palette.success.main} // Set subtitle color to green
           />
-        </Box>
-        <Box
-          gridColumn="span 3"
-          backgroundColor={colors.primary[400]}
-          display="flex"
-          alignItems="center"
-          justifyContent="center"
-        >
+        </StyledBox>
+
+        <StyledBox>
           <StatBox
             title="431,225"
             subtitle="Sales Obtained"
-            progress="0.50"
+            progress={0.5}
             increase="+21%"
             icon={
               <PointOfSaleIcon
-                sx={{ color: colors.greenAccent[600], fontSize: "26px" }}
+                sx={{
+                  color: theme.palette.success.main,
+                  fontSize: "26px",
+                }}
               />
             }
+            titleColor={theme.palette.text.primary}
+            subtitleColor={theme.palette.success.main}
           />
-        </Box>
-        <Box
-          gridColumn="span 3"
-          backgroundColor={colors.primary[400]}
-          display="flex"
-          alignItems="center"
-          justifyContent="center"
-        >
+        </StyledBox>
+
+        <StyledBox>
           <StatBox
             title="32,441"
             subtitle="New Clients"
-            progress="0.30"
+            progress={0.3}
             increase="+5%"
             icon={
               <PersonAddIcon
-                sx={{ color: colors.greenAccent[600], fontSize: "26px" }}
+                sx={{
+                  color: theme.palette.success.main,
+                  fontSize: "26px",
+                }}
               />
             }
+            titleColor={theme.palette.text.primary}
+            subtitleColor={theme.palette.success.main}
           />
-        </Box>
-        <Box
-          gridColumn="span 3"
-          backgroundColor={colors.primary[400]}
-          display="flex"
-          alignItems="center"
-          justifyContent="center"
-        >
+        </StyledBox>
+
+        <StyledBox>
           <StatBox
             title="1,325,134"
             subtitle="Traffic Received"
-            progress="0.80"
+            progress={0.8}
             increase="+43%"
             icon={
               <TrafficIcon
-                sx={{ color: colors.greenAccent[600], fontSize: "26px" }}
+                sx={{
+                  color: theme.palette.success.main,
+                  fontSize: "26px",
+                }}
               />
             }
+            titleColor={theme.palette.text.primary}
+            subtitleColor={theme.palette.success.main}
           />
-        </Box>
+        </StyledBox>
 
-        {/* ROW 2 */}
+        {/* ROW 2 - Revenue Chart */}
         <Box
           gridColumn="span 8"
           gridRow="span 2"
-          backgroundColor={colors.primary[400]}
+          backgroundColor={theme.palette.background.paper}
+          borderRadius={theme.shape.borderRadius}
+          boxShadow={3}
+          p={2}
+          display="flex"
+          flexDirection="column"
+          justifyContent="space-between"
         >
           <Box
-            mt="25px"
-            p="0 30px"
-            display="flex "
+            display="flex"
             justifyContent="space-between"
             alignItems="center"
+            mb={2} // Margin bottom for spacing
           >
             <Box>
               <Typography
                 variant="h5"
                 fontWeight="600"
-                color={colors.grey[100]}
+                color={theme.palette.text.primary}
               >
                 Revenue Generated
               </Typography>
               <Typography
                 variant="h3"
                 fontWeight="bold"
-                color={colors.greenAccent[500]}
+                color={theme.palette.success.main}
               >
                 $59,342.32
               </Typography>
             </Box>
             <Box>
-              <IconButton>
+              <IconButton
+                aria-label="Download Revenue Report"
+                sx={{
+                  "&:hover": {
+                    backgroundColor: theme.palette.action.hover,
+                  },
+                }}
+              >
                 <DownloadOutlinedIcon
-                  sx={{ fontSize: "26px", color: colors.greenAccent[500] }}
+                  sx={{
+                    fontSize: "26px",
+                    color: theme.palette.success.main,
+                  }}
                 />
               </IconButton>
             </Box>
           </Box>
-          <Box height="250px" m="-20px 0 0 0">
+          {/* Fixed Height Container for LineChart */}
+          <Box height="250px">
             <LineChart isDashboard={true} />
           </Box>
         </Box>
+
+        {/* ROW 2 - Recent Transactions */}
         <Box
           gridColumn="span 4"
           gridRow="span 2"
-          backgroundColor={colors.primary[400]}
+          backgroundColor={theme.palette.background.paper}
+          borderRadius={theme.shape.borderRadius}
+          boxShadow={3}
           overflow="auto"
+          p={2}
         >
           <Box
             display="flex"
             justifyContent="space-between"
             alignItems="center"
-            borderBottom={`4px solid ${colors.primary[500]}`}
-            colors={colors.grey[100]}
-            p="15px"
+            borderBottom={`4px solid ${theme.palette.divider}`}
+            pb={1} // Padding bottom for spacing
+            mb={2} // Margin bottom for spacing
           >
-            <Typography color={colors.grey[100]} variant="h5" fontWeight="600">
+            <Typography
+              color={theme.palette.text.primary}
+              variant="h5"
+              fontWeight="600"
+            >
               Recent Transactions
             </Typography>
           </Box>
@@ -189,24 +251,24 @@ const Dashboard = () => {
               display="flex"
               justifyContent="space-between"
               alignItems="center"
-              borderBottom={`4px solid ${colors.primary[500]}`}
-              p="15px"
+              borderBottom={`4px solid ${theme.palette.divider}`}
+              py={1} // Padding y-axis
             >
               <Box>
                 <Typography
-                  color={colors.greenAccent[500]}
-                  variant="h5"
+                  color={theme.palette.success.main}
+                  variant="h6"
                   fontWeight="600"
                 >
                   {transaction.txId}
                 </Typography>
-                <Typography color={colors.grey[100]}>
+                <Typography color={theme.palette.text.primary}>
                   {transaction.user}
                 </Typography>
               </Box>
-              <Box color={colors.grey[100]}>{transaction.date}</Box>
+              <Box color={theme.palette.text.primary}>{transaction.date}</Box>
               <Box
-                backgroundColor={colors.greenAccent[500]}
+                backgroundColor={theme.palette.success.main}
                 p="5px 10px"
                 borderRadius="4px"
               >
@@ -216,14 +278,24 @@ const Dashboard = () => {
           ))}
         </Box>
 
-        {/* ROW 3 */}
+        {/* ROW 3 - Campaign */}
         <Box
           gridColumn="span 4"
           gridRow="span 2"
-          backgroundColor={colors.primary[400]}
+          backgroundColor={theme.palette.background.paper}
+          borderRadius={theme.shape.borderRadius}
+          boxShadow={3}
           p="30px"
+          display="flex"
+          flexDirection="column"
+          alignItems="center"
+          justifyContent="center"
         >
-          <Typography variant="h5" fontWeight="600">
+          <Typography
+            variant="h5"
+            fontWeight="600"
+            color={theme.palette.text.primary}
+          >
             Campaign
           </Typography>
           <Box
@@ -235,23 +307,31 @@ const Dashboard = () => {
             <ProgressCircle size="125" />
             <Typography
               variant="h5"
-              color={colors.greenAccent[500]}
+              color={theme.palette.text.secondary}
               sx={{ mt: "15px" }}
             >
               $48,352 revenue generated
             </Typography>
-            <Typography>Includes extra misc expenditures and costs</Typography>
+            <Typography color={theme.palette.text.primary}>
+              Includes extra misc expenditures and costs
+            </Typography>
           </Box>
         </Box>
+
+        {/* ROW 3 - Sales Quantity */}
         <Box
           gridColumn="span 4"
           gridRow="span 2"
-          backgroundColor={colors.primary[400]}
+          backgroundColor={theme.palette.background.paper}
+          borderRadius={theme.shape.borderRadius}
+          boxShadow={3}
+          p="30px"
         >
           <Typography
             variant="h5"
             fontWeight="600"
-            sx={{ padding: "30px 30px 0 30px" }}
+            sx={{ padding: "0 30px 15px 30px" }}
+            color={theme.palette.text.primary}
           >
             Sales Quantity
           </Typography>
@@ -259,16 +339,21 @@ const Dashboard = () => {
             <BarChart isDashboard={true} />
           </Box>
         </Box>
+
+        {/* ROW 3 - Geography Based Traffic */}
         <Box
           gridColumn="span 4"
           gridRow="span 2"
-          backgroundColor={colors.primary[400]}
-          padding="30px"
+          backgroundColor={theme.palette.background.paper}
+          borderRadius={theme.shape.borderRadius}
+          boxShadow={3}
+          p="30px"
         >
           <Typography
             variant="h5"
             fontWeight="600"
             sx={{ marginBottom: "15px" }}
+            color={theme.palette.text.primary}
           >
             Geography Based Traffic
           </Typography>
@@ -276,7 +361,7 @@ const Dashboard = () => {
             <GeographyChart isDashboard={true} />
           </Box>
         </Box>
-      </Box>
+      </ResponsiveGrid>
     </Box>
   );
 };
