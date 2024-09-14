@@ -10,13 +10,11 @@ import {
 import SendIcon from "@mui/icons-material/Send";
 import PersonIcon from "@mui/icons-material/Person"; // Icon for the user
 import SmartToyIcon from "@mui/icons-material/SmartToy"; // Icon for the AI
-import { tokens } from "../../theme";
 import { useParams } from "react-router-dom";
 
 const AiAgentInterface = () => {
   const { workflowName } = useParams();
   const theme = useTheme();
-  const colors = tokens(theme.palette.mode);
 
   const [messages, setMessages] = useState([]);
   const [inputValue, setInputValue] = useState("");
@@ -59,12 +57,12 @@ const AiAgentInterface = () => {
       {/* Chat Messages Area */}
       <Box
         flexGrow={1}
-        p="20px"
-        bgcolor={colors.primary[400]}
+        p={2.5} // p={2.5} corresponds to 20px if theme.spacing(1) = 8px
+        bgcolor={theme.palette.background.paper}
         ref={chatBoxRef}
         display="flex"
         flexDirection="column"
-        gap="20px"
+        gap={2.5} // gap={2.5} corresponds to 20px
         sx={{
           height: "calc(100vh - 130px)", // Reserve space for the input box
           overflowY: "auto", // Allow scrolling when messages overflow
@@ -85,7 +83,7 @@ const AiAgentInterface = () => {
                   sx={{
                     marginRight: "10px",
                     textAlign: "left",
-                    color: colors.greenAccent[200], // Distinct color for User
+                    color: theme.palette.success.main,
                   }}
                 >
                   {message.text}
@@ -103,7 +101,7 @@ const AiAgentInterface = () => {
                   sx={{
                     marginLeft: "10px",
                     textAlign: "left",
-                    color: colors.blueAccent[200], // Distinct color for AI
+                    color: theme.palette.info.main, // Use info.main from theme
                   }}
                 >
                   {message.text}
@@ -118,7 +116,7 @@ const AiAgentInterface = () => {
       <Box
         display="flex"
         p="20px"
-        bgcolor={colors.grey[800]} // Darker grey for input background
+        bgcolor={theme.palette.grey[800]}
         position="fixed"
         bottom="0"
         width="100%"
@@ -130,8 +128,19 @@ const AiAgentInterface = () => {
           onChange={(e) => setInputValue(e.target.value)}
           onKeyPress={(e) => e.key === "Enter" && handleSend()}
           sx={{
-            bgcolor: colors.grey[700], // Darker grey for text input area
-            color: colors.grey[100], // Light color for text in input box
+            bgcolor: theme.palette.grey[700], // Use grey[700] from theme for greyMain
+            color: theme.palette.grey[300], // Use grey[300] from theme for greyLight
+            "& .MuiOutlinedInput-root": {
+              "& fieldset": {
+                borderColor: theme.palette.grey[500], // Optional: Adjust border color
+              },
+              "&:hover fieldset": {
+                borderColor: theme.palette.primary.main, // Optional: Hover border color
+              },
+              "&.Mui-focused fieldset": {
+                borderColor: theme.palette.primary.dark, // Optional: Focused border color
+              },
+            },
           }}
         />
         <IconButton color="primary" onClick={handleSend}>
