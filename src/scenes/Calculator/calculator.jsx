@@ -1,4 +1,4 @@
-// AdvancedCalculator.jsx
+// src/scenes/Calculator/Calculator.jsx
 import React, { useState } from "react";
 import { evaluate } from "mathjs";
 import {
@@ -8,9 +8,11 @@ import {
   Box,
   Grid,
   TextField,
+  useTheme,
 } from "@mui/material";
 
 const Calculator = () => {
+  const theme = useTheme(); // Access MUI's theme
   const [input, setInput] = useState("");
   const [result, setResult] = useState("");
 
@@ -34,6 +36,7 @@ const Calculator = () => {
       setResult("Error");
     }
   };
+
   const buttons = [
     ["7", "8", "9", "/"],
     ["4", "5", "6", "*"],
@@ -52,13 +55,17 @@ const Calculator = () => {
       <Typography variant="h4" gutterBottom>
         Advanced Calculator
       </Typography>
+
       <TextField
         variant="outlined"
         fullWidth
         value={input}
         placeholder="0"
         InputProps={{ readOnly: true }}
-        sx={{ mb: 2, fontSize: "1.5rem" }}
+        sx={{
+          mb: 2, // mb={2} corresponds to 16px
+          ...theme.typography.h5, // Use theme typography for font size
+        }}
       />
       <TextField
         variant="outlined"
@@ -66,7 +73,10 @@ const Calculator = () => {
         value={result}
         placeholder="Result"
         InputProps={{ readOnly: true }}
-        sx={{ mb: 2, fontSize: "1.5rem" }}
+        sx={{
+          mb: 2, // mb={2} corresponds to 16px
+          ...theme.typography.h5, // Use theme typography for font size
+        }}
       />
 
       {/* Basic Buttons */}
@@ -78,7 +88,7 @@ const Calculator = () => {
                 key={buttonValue}
                 variant="contained"
                 fullWidth
-                sx={{ mb: 1 }}
+                sx={{ mb: 1 }} // mb={1} corresponds to 8px
                 onClick={() =>
                   buttonValue === "="
                     ? handleCalculate()
@@ -104,7 +114,7 @@ const Calculator = () => {
                 key={buttonValue}
                 variant="contained"
                 fullWidth
-                sx={{ mb: 1 }}
+                sx={{ mb: 1 }} // mb={1} corresponds to 8px
                 onClick={() => {
                   if (buttonValue === "C") handleClear();
                   else handleInput(buttonValue);
@@ -119,7 +129,7 @@ const Calculator = () => {
       <Box mt={2}>
         <Button
           variant="contained"
-          color="secondary"
+          color="secondary" // Uses theme.palette.secondary
           onClick={handleDelete}
           fullWidth
         >
