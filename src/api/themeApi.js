@@ -1,4 +1,4 @@
-const API_URL = "http://localhost:5000/themes";
+const API_URL = "http://localhost:5000/api/themes";
 
 export const fetchThemes = async () => {
   try {
