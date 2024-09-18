@@ -2,7 +2,9 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import { fetchThemes } from "../api/themeApi";
 
-// Thunk to fetch themes from the backend
+/**
+ * Thunk to fetch themes from the backend.
+ */
 export const getThemes = createAsyncThunk("themes/getThemes", async () => {
   const themes = await fetchThemes();
   return themes;
@@ -19,12 +21,21 @@ const themeSlice = createSlice({
     mode: "light", // Current mode: 'light' or 'dark'
   },
   reducers: {
+    /**
+     * Sets the selected light theme.
+     */
     setLightTheme: (state, action) => {
       state.lightTheme = action.payload;
     },
+    /**
+     * Sets the selected dark theme.
+     */
     setDarkTheme: (state, action) => {
       state.darkTheme = action.payload;
     },
+    /**
+     * Toggles between light and dark mode.
+     */
     toggleMode: (state) => {
       state.mode = state.mode === "light" ? "dark" : "light";
     },
@@ -38,20 +49,12 @@ const themeSlice = createSlice({
       .addCase(getThemes.fulfilled, (state, action) => {
         state.availableThemes = action.payload;
 
-        // Initialize lightTheme and darkTheme if not already set
-        if (!state.lightTheme) {
-          const defaultLight = action.payload.find(
-            (theme) => theme.mode === "light"
-          );
-          state.lightTheme = defaultLight || null;
-        }
+        // Initialize lightTheme and darkTheme from fetched themes
+        state.lightTheme =
+          action.payload.find((theme) => theme.mode === "light") || null;
 
-        if (!state.darkTheme) {
-          const defaultDark = action.payload.find(
-            (theme) => theme.mode === "dark"
-          );
-          state.darkTheme = defaultDark || null;
-        }
+        state.darkTheme =
+          action.payload.find((theme) => theme.mode === "dark") || null;
 
         state.loading = false;
       })
