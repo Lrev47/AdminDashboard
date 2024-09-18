@@ -14,7 +14,7 @@ const LineChart = ({ isCustomLineColors = false, isDashboard = false }) => {
         axis: {
           domain: {
             line: {
-              stroke: currentTheme?.greyMain || theme.palette.grey[100], // Dynamic color from Redux
+              stroke: "#888888", // Hardcoded grey color for axis lines
             },
           },
           legend: {
@@ -24,7 +24,7 @@ const LineChart = ({ isCustomLineColors = false, isDashboard = false }) => {
           },
           ticks: {
             line: {
-              stroke: currentTheme?.greyMain || theme.palette.grey[100], // Dynamic color
+              stroke: "#888888", // Hardcoded grey color for tick lines
               strokeWidth: 1,
             },
             text: {
@@ -34,7 +34,7 @@ const LineChart = ({ isCustomLineColors = false, isDashboard = false }) => {
         },
         legends: {
           text: {
-            fill: currentTheme?.text || theme.palette.text.primary, // Legend text color
+            fill: currentTheme?.text || theme.palette.text.primary, // Dynamic legend text color
           },
         },
         tooltip: {
@@ -43,7 +43,7 @@ const LineChart = ({ isCustomLineColors = false, isDashboard = false }) => {
           },
         },
       }}
-      colors={isDashboard ? { datum: "color" } : { scheme: "nivo" }} // Use default color scheme or dynamic based on dashboard
+      colors={{ scheme: "paired" }} // Hardcoded color scheme for the line colors
       margin={{ top: 50, right: 110, bottom: 50, left: 60 }}
       xScale={{ type: "point" }}
       yScale={{
