@@ -4,19 +4,21 @@ import { useSelector, useDispatch } from "react-redux";
 import { useMemo, useEffect } from "react";
 import { getThemes, toggleMode } from "./features/themeSlice";
 
+/**
+ * Custom hook to manage theme mode and provide theme configurations.
+ */
 export const useMode = () => {
   const dispatch = useDispatch();
-  const themeState = useSelector((state) => state.theme) || {};
   const {
     availableThemes = [],
     lightTheme,
     darkTheme,
     mode = "light",
-  } = themeState;
+  } = useSelector((state) => state.theme) || {};
 
   // Fetch themes when the hook is first used
   useEffect(() => {
-    if (!Array.isArray(availableThemes) || availableThemes.length === 0) {
+    if (availableThemes.length === 0) {
       dispatch(getThemes());
     }
   }, [dispatch, availableThemes]);
@@ -54,10 +56,10 @@ export const useMode = () => {
       mode: selectedTheme.mode,
       primary: {
         main: selectedTheme.primary,
-        light: selectedTheme.primaryLight,
+        light: selectedTheme.primaryLight || selectedTheme.primary,
       },
       secondary: {
-        main: selectedTheme.greenAccent, // Assuming greenAccent as secondary
+        main: selectedTheme.greenAccent,
       },
       error: {
         main: selectedTheme.redAccent,
@@ -70,30 +72,40 @@ export const useMode = () => {
       },
       background: {
         default: selectedTheme.background,
-        paper: selectedTheme.background,
+        paper: selectedTheme.paper || selectedTheme.background,
       },
       text: {
         primary: selectedTheme.text,
         secondary: selectedTheme.greyMain,
       },
       divider: selectedTheme.greyDark,
-      // Add custom palette entries if needed
     };
 
+    // Create and return the theme
     return createTheme({
       palette: mappedPalette,
       typography: {
         fontFamily: ["Roboto", "sans-serif"].join(","),
         fontSize: 14,
         h1: {
-          fontSize: 40,
+          fontSize: 32,
+          fontWeight: 700,
         },
         h2: {
-          fontSize: 32,
+          fontSize: 28,
+          fontWeight: 700,
         },
-        // ... other typography settings
+        h3: {
+          fontSize: 24,
+          fontWeight: 700,
+        },
+        body1: {
+          fontSize: 14,
+        },
+        body2: {
+          fontSize: 12,
+        },
       },
-      // You can add more theme customizations here
     });
   }, [lightTheme, darkTheme, mode]);
 
