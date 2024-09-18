@@ -3,6 +3,7 @@ import React, { useState, useEffect } from "react";
 import { ProSidebar, Menu, MenuItem } from "react-pro-sidebar";
 import { Box, IconButton, Typography, Collapse } from "@mui/material";
 import { Link } from "react-router-dom";
+import { useSelector, useDispatch } from "react-redux"; // Import useDispatch
 import "react-pro-sidebar/dist/css/styles.css";
 import { useTheme } from "@mui/material/styles"; // Correctly access MUI theme
 import HomeOutlinedIcon from "@mui/icons-material/HomeOutlined";
@@ -25,7 +26,7 @@ import CalculateOutlinedIcon from "@mui/icons-material/CalculateOutlined";
 import NoteOutlinedIcon from "@mui/icons-material/NoteOutlined";
 import TerminalOutlinedIcon from "@mui/icons-material/TerminalOutlined";
 import BusinessCenterOutlinedIcon from "@mui/icons-material/BusinessCenterOutlined";
-import { useSelector } from "react-redux"; // For accessing user data
+import { fetchCurrentUser } from "../../features/userSlice"; // Import fetchCurrentUser
 
 // Sidebar item component
 const Item = ({ title, to, icon, selected, setSelected }) => {
@@ -47,6 +48,7 @@ const Item = ({ title, to, icon, selected, setSelected }) => {
 
 const Sidebar = () => {
   const theme = useTheme(); // Use MUI's useTheme hook
+  const dispatch = useDispatch(); // Initialize useDispatch
   const [isCollapsed, setIsCollapsed] = useState(false);
   const [selected, setSelected] = useState("Dashboard");
 
@@ -60,7 +62,13 @@ const Sidebar = () => {
   const handleDataToggle = () => setIsDataOpen(!isDataOpen);
   const handleToolsToggle = () => setIsToolsOpen(!isToolsOpen);
 
-  const user = useSelector((state) => state.auth.user);
+  const user = useSelector((state) => state.user.currentUser); // Access user data
+
+  useEffect(() => {
+    if (!user) {
+      dispatch(fetchCurrentUser()); // Dispatch fetchCurrentUser action
+    }
+  }, [dispatch, user]);
 
   useEffect(() => {
     if (user) {
