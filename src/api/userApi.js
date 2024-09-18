@@ -1,4 +1,4 @@
-const BASE_URL = "http://localhost:5000/users"; // Adjust as needed
+const BASE_URL = "http://localhost:5000/api/user"; // Adjust as needed
 
 // Helper function to handle API responses
 const handleResponse = async (response) => {
