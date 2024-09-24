@@ -26,6 +26,7 @@ import CalculateOutlinedIcon from "@mui/icons-material/CalculateOutlined";
 import NoteOutlinedIcon from "@mui/icons-material/NoteOutlined";
 import TerminalOutlinedIcon from "@mui/icons-material/TerminalOutlined";
 import BusinessCenterOutlinedIcon from "@mui/icons-material/BusinessCenterOutlined";
+import WorkOutlineOutlinedIcon from "@mui/icons-material/WorkOutlineOutlined";
 import { fetchCurrentUser } from "../../features/userSlice"; // Import fetchCurrentUser
 
 // Sidebar item component
@@ -232,25 +233,24 @@ const Sidebar = () => {
                 selected={selected}
                 setSelected={setSelected}
               />
-
               <Item
-                title="Profile Form"
-                to="/form"
-                icon={<PersonOutlinedIcon />}
+                title="Job Tracker"
+                to="/job-tracker"
+                icon={<BusinessCenterOutlinedIcon />}
                 selected={selected}
                 setSelected={setSelected}
               />
               <Item
-                title="Calendar"
-                to="/calendar"
-                icon={<CalendarTodayOutlinedIcon />}
+                title="Project Manager"
+                to="/product-Manager"
+                icon={<WorkOutlineOutlinedIcon />}
                 selected={selected}
                 setSelected={setSelected}
               />
               <Item
-                title="FAQ Page"
-                to="/faq"
-                icon={<HelpOutlineOutlinedIcon />}
+                title="LeetCode Tracker"
+                to="/leetCode-tracker"
+                icon={<CodeOutlinedIcon />}
                 selected={selected}
                 setSelected={setSelected}
               />
@@ -338,13 +338,6 @@ const Sidebar = () => {
                 setSelected={setSelected}
               />
               <Item
-                title="Job Tracker"
-                to="/job-tracker"
-                icon={<BusinessCenterOutlinedIcon />}
-                selected={selected}
-                setSelected={setSelected}
-              />
-              <Item
                 title="Notepad"
                 to="/notepad"
                 icon={<NoteOutlinedIcon />}
@@ -400,6 +393,27 @@ const Sidebar = () => {
                 title="Invoices Balances"
                 to="/invoices"
                 icon={<ReceiptOutlinedIcon />}
+                selected={selected}
+                setSelected={setSelected}
+              />
+              <Item
+                title="Profile Form"
+                to="/form"
+                icon={<PersonOutlinedIcon />}
+                selected={selected}
+                setSelected={setSelected}
+              />
+              <Item
+                title="Calendar"
+                to="/calendar"
+                icon={<CalendarTodayOutlinedIcon />}
+                selected={selected}
+                setSelected={setSelected}
+              />
+              <Item
+                title="FAQ Page"
+                to="/faq"
+                icon={<HelpOutlineOutlinedIcon />}
                 selected={selected}
                 setSelected={setSelected}
               />
