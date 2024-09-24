@@ -1,287 +1,202 @@
 // src/scenes/dashboard/index.js
 import React from "react";
-import { Box, Button, IconButton, Typography, useTheme } from "@mui/material";
-import DownloadOutlinedIcon from "@mui/icons-material/DownloadOutlined";
-import EmailIcon from "@mui/icons-material/Email";
-import PointOfSaleIcon from "@mui/icons-material/PointOfSale";
-import PersonAddIcon from "@mui/icons-material/PersonAdd";
-import TrafficIcon from "@mui/icons-material/Traffic";
+import { Box, Button, Typography, Paper, useTheme } from "@mui/material";
+import { useNavigate } from "react-router-dom";
 
-import Header from "../../components/Header";
-import LineChart from "../../components/LineChart";
-import GeographyChart from "../../components/GeographyChart";
-import BarChart from "../../components/BarChart";
-import StatBox from "../../components/StatBox";
-import ProgressCircle from "../../components/ProgressCircle";
-import { mockTransactions } from "../../data/mockData";
-
-/**
- * Dashboard component that displays various statistics and charts.
- */
 const Dashboard = () => {
-  const theme = useTheme(); // Access the theme
+  const theme = useTheme();
+  const navigate = useNavigate();
+
+  // Function to handle navigation to different pages
+  const handleNavigate = (path) => {
+    navigate(path);
+  };
 
   return (
-    <Box m="20px">
+    <Box m="40px">
       {/* HEADER */}
-      <Box display="flex" justifyContent="space-between" alignItems="center">
-        <Header title="DASHBOARD" subtitle="Welcome to your dashboard" />
-
-        {/* Download Reports Button */}
-        <Button
-          sx={{
-            backgroundColor: theme.palette.secondary.main,
-            color: theme.palette.secondary.contrastText,
-            fontSize: "14px",
-            fontWeight: "bold",
-            padding: "10px 20px",
-            "&:hover": {
-              backgroundColor: theme.palette.secondary.dark,
-            },
-          }}
-          startIcon={<DownloadOutlinedIcon />}
-          aria-label="Download Reports"
-        >
-          Download Reports
-        </Button>
+      <Box
+        display="flex"
+        justifyContent="space-between"
+        alignItems="center"
+        mb="30px"
+      >
+        <Typography variant="h4" fontWeight="bold">
+          My Dashboard
+        </Typography>
+        <Typography variant="subtitle1" color={theme.palette.text.primary}>
+          Manage your projects and track progress
+        </Typography>
       </Box>
 
-      {/* GRID & CHARTS */}
+      {/* GRID & TILES */}
       <Box
         display="grid"
         gridTemplateColumns="repeat(12, 1fr)"
-        gridAutoRows="140px"
+        gridAutoRows="auto"
         gap="20px"
+        sx={{
+          [theme.breakpoints.down("md")]: {
+            gridTemplateColumns: "repeat(6, 1fr)", // Adjust layout for medium screens
+          },
+          [theme.breakpoints.down("sm")]: {
+            gridTemplateColumns: "repeat(1, 1fr)", // Stack columns on smaller screens
+          },
+        }}
       >
-        {/* ROW 1 - Stat Boxes */}
-        {/* Emails Sent */}
-        <Box
-          gridColumn="span 3"
-          bgcolor={theme.palette.background.paper}
-          display="flex"
-          alignItems="center"
-          justifyContent="center"
+        {/* Websites Tile */}
+        <Paper
+          elevation={3}
+          sx={{
+            gridColumn: "span 4",
+            bgcolor: theme.palette.background.default,
+            padding: "20px",
+            borderRadius: "12px",
+            display: "flex",
+            flexDirection: "column",
+            justifyContent: "center",
+            alignItems: "center",
+            textAlign: "center",
+            height: "auto", // Auto height to adapt to content
+          }}
         >
-          <StatBox
-            title="12,361"
-            subtitle="Emails Sent"
-            progress={0.75}
-            increase="+14%"
-            icon={
-              <EmailIcon
-                sx={{ color: theme.palette.primary.main, fontSize: "26px" }}
-              />
-            }
-          />
-        </Box>
-
-        {/* Sales Obtained */}
-        <Box
-          gridColumn="span 3"
-          bgcolor={theme.palette.background.paper}
-          display="flex"
-          alignItems="center"
-          justifyContent="center"
-        >
-          <StatBox
-            title="431,225"
-            subtitle="Sales Obtained"
-            progress={0.5}
-            increase="+21%"
-            icon={
-              <PointOfSaleIcon
-                sx={{ color: theme.palette.primary.main, fontSize: "26px" }}
-              />
-            }
-          />
-        </Box>
-
-        {/* New Clients */}
-        <Box
-          gridColumn="span 3"
-          bgcolor={theme.palette.background.paper}
-          display="flex"
-          alignItems="center"
-          justifyContent="center"
-        >
-          <StatBox
-            title="32,441"
-            subtitle="New Clients"
-            progress={0.3}
-            increase="+5%"
-            icon={
-              <PersonAddIcon
-                sx={{ color: theme.palette.primary.main, fontSize: "26px" }}
-              />
-            }
-          />
-        </Box>
-
-        {/* Traffic Received */}
-        <Box
-          gridColumn="span 3"
-          bgcolor={theme.palette.background.paper}
-          display="flex"
-          alignItems="center"
-          justifyContent="center"
-        >
-          <StatBox
-            title="1,325,134"
-            subtitle="Traffic Received"
-            progress={0.8}
-            increase="+43%"
-            icon={
-              <TrafficIcon
-                sx={{ color: theme.palette.primary.main, fontSize: "26px" }}
-              />
-            }
-          />
-        </Box>
-
-        {/* ROW 2 - Revenue Chart */}
-        <Box
-          gridColumn="span 8"
-          gridRow="span 2"
-          bgcolor={theme.palette.background.paper}
-          p="30px"
-        >
-          <Box
-            display="flex"
-            justifyContent="space-between"
-            alignItems="center"
-          >
-            <Box>
-              <Typography variant="h5" fontWeight="600">
-                Revenue Generated
-              </Typography>
-              <Typography
-                variant="h3"
-                fontWeight="bold"
-                color={theme.palette.success.main}
-              >
-                $59,342.32
-              </Typography>
-            </Box>
-            <IconButton aria-label="Download Revenue Report">
-              <DownloadOutlinedIcon
-                sx={{ fontSize: "26px", color: theme.palette.success.main }}
-              />
-            </IconButton>
-          </Box>
-          <Box height="250px" mt="5px">
-            <LineChart isDashboard={true} />
-          </Box>
-        </Box>
-
-        {/* ROW 2 - Recent Transactions */}
-        <Box
-          gridColumn="span 4"
-          gridRow="span 2"
-          bgcolor={theme.palette.background.paper}
-          overflow="auto"
-        >
-          <Box
-            display="flex"
-            justifyContent="space-between"
-            alignItems="center"
-            borderBottom={`4px solid ${theme.palette.divider}`}
-            p="15px"
-          >
-            <Typography variant="h5" fontWeight="600">
-              Recent Transactions
-            </Typography>
-          </Box>
-          {mockTransactions.map((transaction, i) => (
-            <Box
-              key={`${transaction.txId}-${i}`}
-              display="flex"
-              justifyContent="space-between"
-              alignItems="center"
-              borderBottom={`4px solid ${theme.palette.divider}`}
-              p="15px"
+          <Typography variant="h6" fontWeight="600" mb={2}>
+            My Websites
+          </Typography>
+          <Box display="flex" flexDirection="column" width="100%" gap={1}>
+            <Button
+              variant="contained"
+              sx={{ width: "100%" }}
+              onClick={() => handleNavigate("/website1")}
             >
-              <Box>
-                <Typography
-                  variant="h6"
-                  fontWeight="600"
-                  color={theme.palette.success.main}
-                >
-                  {transaction.txId}
-                </Typography>
-                <Typography color={theme.palette.text.secondary}>
-                  {transaction.user}
-                </Typography>
-              </Box>
-              <Typography color={theme.palette.text.secondary}>
-                {transaction.date}
-              </Typography>
-              <Box
-                bgcolor={theme.palette.success.light}
-                p="5px 10px"
-                borderRadius="4px"
-              >
-                ${transaction.cost}
-              </Box>
-            </Box>
-          ))}
-        </Box>
-
-        {/* ROW 3 - Campaign */}
-        <Box
-          gridColumn="span 4"
-          gridRow="span 2"
-          bgcolor={theme.palette.background.paper}
-          p="30px"
-        >
-          <Typography variant="h5" fontWeight="600">
-            Campaign
-          </Typography>
-          <Box
-            display="flex"
-            flexDirection="column"
-            alignItems="center"
-            mt="25px"
-          >
-            <ProgressCircle size={125} />
-            <Typography
-              variant="h5"
-              color={theme.palette.success.main}
-              sx={{ mt: "15px" }}
+              Website 1
+            </Button>
+            <Button
+              variant="contained"
+              sx={{ width: "100%" }}
+              onClick={() => handleNavigate("/website2")}
             >
-              $48,352 revenue generated
-            </Typography>
+              Website 2
+            </Button>
+            <Button
+              variant="contained"
+              sx={{ width: "100%" }}
+              onClick={() => handleNavigate("/website3")}
+            >
+              Website 3
+            </Button>
           </Box>
-        </Box>
+        </Paper>
 
-        {/* ROW 3 - Sales Quantity */}
-        <Box
-          gridColumn="span 4"
-          gridRow="span 2"
-          bgcolor={theme.palette.background.paper}
-          p="30px"
+        {/* Job Tracking Tile */}
+        <Paper
+          elevation={3}
+          sx={{
+            gridColumn: "span 4",
+            bgcolor: theme.palette.background.default,
+            padding: "20px",
+            borderRadius: "12px",
+            display: "flex",
+            flexDirection: "column",
+            justifyContent: "center",
+            alignItems: "center",
+            textAlign: "center",
+          }}
         >
-          <Typography variant="h5" fontWeight="600" sx={{ mb: "15px" }}>
-            Sales Quantity
+          <Typography variant="h6" fontWeight="600" mb={2}>
+            Job Tracking
           </Typography>
-          <Box height="250px">
-            <BarChart isDashboard={true} />
-          </Box>
-        </Box>
+          <Typography
+            variant="subtitle1"
+            color={theme.palette.success.main}
+            mb={2}
+          >
+            Current Applications: 12
+          </Typography>
+          <Button
+            variant="outlined"
+            onClick={() => handleNavigate("/job-tracker")}
+            sx={{
+              width: "100%",
+              color: theme.palette.text.primary,
+              borderColor: theme.palette.text.primary,
+              "&:hover": {
+                borderColor: theme.palette.text.primary,
+                backgroundColor: theme.palette.action.hover,
+              },
+            }}
+          >
+            View Job Tracker
+          </Button>
+        </Paper>
 
-        {/* ROW 3 - Geography Based Traffic */}
-        <Box
-          gridColumn="span 4"
-          gridRow="span 2"
-          bgcolor={theme.palette.background.paper}
-          p="30px"
+        {/* Leetcode Tracking Tile */}
+        <Paper
+          elevation={3}
+          sx={{
+            gridColumn: "span 4",
+            bgcolor: theme.palette.background.default,
+            padding: "20px",
+            borderRadius: "12px",
+            display: "flex",
+            flexDirection: "column",
+            justifyContent: "center",
+            alignItems: "center",
+            textAlign: "center",
+          }}
         >
-          <Typography variant="h5" fontWeight="600" sx={{ mb: "15px" }}>
-            Geography Based Traffic
+          <Typography variant="h6" fontWeight="600" mb={2}>
+            Leetcode Tracking
           </Typography>
-          <Box height="200px">
-            <GeographyChart isDashboard={true} />
-          </Box>
-        </Box>
+          <Typography variant="subtitle1" color={theme.palette.info.main}>
+            Problems Solved: 230
+          </Typography>
+          <Typography
+            variant="subtitle1"
+            color={theme.palette.info.main}
+            mb={2}
+          >
+            Current Score: 1500
+          </Typography>
+          <Button
+            variant="outlined"
+            onClick={() => handleNavigate("/leetcode-tracker")}
+            sx={{
+              width: "100%",
+              color: theme.palette.text.primary,
+              borderColor: theme.palette.text.primary,
+              "&:hover": {
+                borderColor: theme.palette.text.primary,
+                backgroundColor: theme.palette.action.hover,
+              },
+            }}
+          >
+            View Leetcode Tracker
+          </Button>
+        </Paper>
+
+        {/* Placeholder Tile for future features */}
+        <Paper
+          elevation={3}
+          sx={{
+            gridColumn: "span 4",
+            bgcolor: theme.palette.background.default,
+            padding: "20px",
+            borderRadius: "12px",
+            display: "flex",
+            flexDirection: "column",
+            justifyContent: "center",
+            alignItems: "center",
+            textAlign: "center",
+          }}
+        >
+          <Typography variant="h6" fontWeight="600" mb={2}>
+            Future Feature
+          </Typography>
+          <Typography variant="subtitle1" color={theme.palette.warning.main}>
+            Coming Soon...
+          </Typography>
+        </Paper>
       </Box>
     </Box>
   );
