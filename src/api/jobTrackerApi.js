@@ -1,4 +1,4 @@
-const API_URL = "http://localhost:5000/jobTracker";
+const API_URL = "http://localhost:5000/api/jobTracker/";
 
 // Helper function to set headers with Authorization token
 const setHeaders = (token) => {
